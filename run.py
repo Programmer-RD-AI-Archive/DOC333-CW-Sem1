@@ -1,1 +1,1 @@
-from Corporation import *
+from Tests import *
