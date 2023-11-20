@@ -42,13 +42,12 @@ class Projects:
             completed_projects.append(completed_project_details)
             del all_projects[index_of_project]
             del project_names[index_of_project]
-            return (True, "Successfully completed")
+            return (True, "Successfully removed completed projects...")
         except Exception as e:
             return (False, e)
 
     @staticmethod
     def create_project(
-        self,
         status_list: list,
         index: int,
         code_of_project: str,
@@ -57,23 +56,57 @@ class Projects:
         expected_end_date: str,
         number_of_workers: str,
         project_status: str,
-    ):
-        status_list[index] += 1
-        project_data = [
-            code_of_project,
-            clients_name,
-            start_date,
-            expected_end_date,
-            number_of_workers,
-            project_status,
-            index,
-        ]
-        project_names.append(code_of_project)
-        all_projects.append(project_data)
-        workers -= number_of_workers
+    ) -> Tuple[bool, str]:
+        try:
+            status_list[index] += 1
+            project_data = [
+                code_of_project,
+                clients_name,
+                start_date,
+                expected_end_date,
+                number_of_workers,
+                project_status,
+                index,
+            ]
+            project_names.append(code_of_project)
+            all_projects.append(project_data)
+            workers -= number_of_workers
+            return (True, "Successfully created a new project...")
+        except Exception as e:
+            return (False, e)
+
+    @staticmethod
+    def update_project_details(
+        status_list: list,
+        index: int,
+        previous_index: int,
+        code_of_project: str,
+        clients_name: str,
+        start_date: str,
+        expected_end_date: str,
+        number_of_workers: str,
+        project_status: str,
+    ) -> Tuple[bool, str]:
+        try:
+            status_list[index] += 1
+            status_list[previous_index] -= 1
+            project_data = [
+                code_of_project,
+                clients_name,
+                start_date,
+                expected_end_date,
+                number_of_workers,
+                project_status,
+                index,
+            ]
+            index = project_names.index(code_of_project)
+            all_projects[index] = project_data
+            return (True, "Project details updated successfully...")
+        except Exception as e:
+            return (False, e)
 
 
-def menu(company_name: str = company_name, msg: str = "Enter your choice: "):
+def menu(company_name: str = company_name, msg: str = "Enter your choice: ") -> str:
     menu = f"""
      {company_name}
      Main Menu
@@ -135,8 +168,18 @@ while execute:
         number_of_workers = int(input("Numbers of Workers : "))
         project_status, status_list, index = enter_project_status()
         save = str(input("Do you want to save the project(Yes/No)? "))
-        if (save.upper() == "YES") and (number_of_workers <= workers):
-            pass  # TODO
+        if (number_of_workers <= workers) and (save.upper() == "YES"):
+            execution_status, response_msg = Projects().create_project(
+                status_list,
+                index,
+                code_of_project,
+                clients_name,
+                start_date,
+                expected_end_date,
+                number_of_workers,
+                project_status,
+            )
+            print(f"{response_msg} ({execution_status})")
         else:
             print(
                 "The project was *not* saved ..!"
@@ -153,7 +196,7 @@ while execute:
         )
         code_of_project = str(input("Project Code : "))
         save = str(input("Do you want to save the project (Yes/ No)? "))
-        if (save.upper() == "YES") and (code_of_project in project_names):
+        if (code_of_project in project_names) and (save.upper() == "YES"):
             execution_status, response_msg = Projects().remove_completed_projects(
                 code_of_project
             )
@@ -204,24 +247,22 @@ while execute:
             project_names.index(code_of_project)
         ][4:]
         if (
-            (save.upper() == "YES")
-            and (number_of_workers <= (workers + current_workers))
+            (number_of_workers <= (workers + current_workers))
+            and save.upper() == "YES"
             and code_of_project in project_names
         ):
-            status_list[index] += 1
-            status_list[previous_index] -= 1
-            project_data = [
+            execution_status, response_msg = Projects().update_project_details(
+                status_list,
+                index,
+                previous_index,
                 code_of_project,
                 clients_name,
                 start_date,
                 expected_end_date,
                 number_of_workers,
                 project_status,
-                index,
-            ]
-            index = project_names.index(code_of_project)
-            all_projects[index] = project_data
-            print("Project details updated successfully...")
+            )
+            print(f"{response_msg} ({execution_status})")
         else:
             print(
                 "There isn't enough workers..!"
@@ -237,9 +278,8 @@ while execute:
       Project Statistics
     """
         )
-        print(f"Number of ongoing projects : {statistics_list[0]}")
-        print(f"Number of completed projects : {statistics_list[1]}")
-        print(f"Number of On Hold Projects :  {statistics_list[2]}")
+        for idx in range(len(possible_inputs)):
+            print(f"Number of {possible_inputs[idx]} projects : {statistics_list[idx]}")
         print(f"Number of available workers : {workers}")
         add_project = str(input("Do you want to add the project (Yes/No)?"))  # TODO
 
