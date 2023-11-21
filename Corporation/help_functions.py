@@ -20,7 +20,8 @@ class Display:
         choice = str(input(choice_msg))
         return choice
 
-    def add_new_project(self):
+    @staticmethod
+    def add_new_project():
         print(
             """
             XYZ Company
@@ -28,7 +29,8 @@ class Display:
           """
         )
 
-    def remove_completed_project(self):
+    @staticmethod
+    def remove_completed_project():
         print(
             """
       XYZ Company
@@ -36,7 +38,8 @@ class Display:
     """
         )
 
-    def add_new_workers(self):
+    @staticmethod
+    def add_new_workers():
         print(
             """
       XYZ Company
@@ -44,7 +47,8 @@ class Display:
     """
         )
 
-    def update_project_details(self):
+    @staticmethod
+    def update_project_details():
         print(
             """
       XYZ Company
@@ -52,7 +56,8 @@ class Display:
     """
         )
 
-    def project_statistics(self):
+    @staticmethod
+    def project_statistics():
         print(
             """
       XYZ Company
