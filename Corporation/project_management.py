@@ -25,10 +25,10 @@ class Project_Management:
         no_of_workers,
         project_status,
     ):
-        pass
+        raise NotImplementedError()
 
     def remove_completed_projects(self, project_code):
-        pass
+        raise NotImplementedError()
 
     def update_projects(
         self,
@@ -39,7 +39,7 @@ class Project_Management:
         no_of_workers,
         project_status,
     ):
-        pass
+        raise NotImplementedError()
 
     def project_existention(self, project_code):
-        pass
+        raise NotImplementedError()
