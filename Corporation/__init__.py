@@ -1,4 +1,3 @@
-import datetime
 
 organization_name = "XYZ Corporation"
 
