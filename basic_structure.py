@@ -1,6 +1,3 @@
-# initialize the variable
-import datetime
-
 workers = 0
 your_choice = 0
 all_projects = []
