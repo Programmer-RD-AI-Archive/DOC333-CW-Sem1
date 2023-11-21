@@ -278,8 +278,8 @@ while execute:
       Project Statistics
     """
         )
-        for idx in range(len(possible_inputs)):
-            print(f"Number of {possible_inputs[idx]} projects : {statistics_list[idx]}")
+        for idx, item in enumerate(possible_inputs):
+            print(f"Number of {item} projects : {statistics_list[idx]}")
         print(f"Number of available workers : {workers}")
         add_project = str(input("Do you want to add the project (Yes/No)?"))  # TODO
 
