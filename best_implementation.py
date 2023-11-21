@@ -107,7 +107,7 @@ class Projects:
 
 
 def menu(company_name: str = company_name, msg: str = "Enter your choice: ") -> str:
-    menu = f"""
+    main_menu = f"""
      {company_name}
      Main Menu
      1. Add a new project to existing projects.
@@ -117,7 +117,7 @@ def menu(company_name: str = company_name, msg: str = "Enter your choice: ") -> 
      5. Project statics.
      6. Exit
     """
-    print(menu)
+    print(main_menu)
     choice = str(input(msg))
     return choice
 
