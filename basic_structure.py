@@ -1,5 +1,4 @@
 # initialize the variable
-import datetime
 
 workers = 0
 your_choice = 0
