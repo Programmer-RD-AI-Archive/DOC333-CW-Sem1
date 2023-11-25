@@ -21,7 +21,11 @@ while execute:
             "Expected end date (MM/DD/YYYY) : "
         )
         number_of_workers = int(input("Numbers of Workers : "))
-        project_status, status_list, index = enter_project_status()
+        (
+            project_status,
+            status_list,
+            index,
+        ) = Verification().project_status_verification()
         save = str(input("Do you want to save the project(Yes/No)? "))
         if (number_of_workers <= workers) and (save.upper() == "YES"):
             execution_status, response_msg, workers = Projects().create_project(
@@ -53,8 +57,16 @@ while execute:
         code_of_project = str(input("Project Code : "))
         save = str(input("Do you want to save the project (Yes/ No)? "))
         if (code_of_project in project_names) and (save.upper() == "YES"):
-            execution_status, response_msg = Projects().remove_completed_projects(
-                code_of_project
+            (
+                execution_status,
+                response_msg,
+                workers,
+            ) = Projects().remove_completed_projects(
+                code_of_project,
+                all_projects,
+                workers,
+                statistics_list,
+                completed_projects,
             )
             print(f"{response_msg} ({execution_status})")
         else:
@@ -95,7 +107,11 @@ while execute:
             "Expected end date (MM/DD/YYYY) : "
         )
         number_of_workers = int(input("Numbers of Workers : "))
-        project_status, status_list, index = enter_project_status()
+        (
+            project_status,
+            status_list,
+            index,
+        ) = Verification().project_status_verification()
         save = str(input("Do you want to update the project details (Yes/No)?"))
         (
             current_workers,
@@ -109,7 +125,7 @@ while execute:
             and save.upper() == "YES"
             and code_of_project in project_names
         ):
-            execution_status, response_msg = Projects().update_project_details(
+            execution_status, response_msg, workers = Projects().update_project_details(
                 status_list,
                 index,
                 previous_index,
@@ -119,6 +135,8 @@ while execute:
                 expected_end_date,
                 number_of_workers,
                 project_status,
+                current_workers,
+                workers,
             )
             print(f"{response_msg} ({execution_status})")
         else:
