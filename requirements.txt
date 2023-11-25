@@ -184,7 +184,7 @@ multidict @ file:///work/ci_py311/multidict_1676825314105/work
 multipledispatch @ file:///work/ci_py311/multipledispatch_1676841220684/work
 multiprocess @ file:///work/ci_py311/multiprocess_1676841234722/work
 munkres==1.1.4
-mypy-extensions==0.4.3
+mypy-extensions==0.4.4
 navigator-updater==0.4.0
 nbclassic @ file:///croot/nbclassic_1681756170010/work
 nbclient @ file:///work/ci_py311/nbclient_1676823713954/work
