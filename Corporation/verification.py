@@ -4,11 +4,11 @@ from Corporation import *
 class Verification:
     @staticmethod
     def date_verification(msg: str) -> str:
-        """sumary_line
+        """A function that uses recursion to make sure that the entered date is in a correct format...
 
         Keyword arguments:
-        argument -- description
-        Return: return_description
+        msg (str) -- the message that should be displayed...
+        Return: A string which contains a correct date format...
         """
         date = input(msg)
         splitted_date = date.split(date[2] if len(date) > 3 else " ")
@@ -53,11 +53,13 @@ class Verification:
         )
 
     def project_code_verification(self, msg: str, project_codes: list) -> str:
-        """sumary_line
+        """Project Code Verification function with the use of recursion...
 
         Keyword arguments:
-        argument -- description
-        Return: return_description
+        msg (str) -- The message that is displayed and ask the user to enter the project code
+        project_codes (list) -- The list of project codes that already exists
+
+        Return: (str) of a project code that doesnt already exist...
         """
         project_code = str(input(msg))
         if project_code in project_codes:

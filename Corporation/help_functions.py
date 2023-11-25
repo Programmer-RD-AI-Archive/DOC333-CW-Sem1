@@ -7,11 +7,15 @@ def menu(
     company_name: str = company_name,
     msg: str = "Enter your choice: ",
 ) -> str:
-    """sumary_line
+    """This function finds the choice that should be displayed to the user next...
 
     Keyword arguments:
-    argument -- description
-    Return: return_description
+    redirect (bool) -- A boolean to know whether or not the user will be redirected
+    to (int) -- The choice that user will be redirected to
+    company_name (str) -- description
+    msg (str) -- description
+
+    Return: (str) the next choice which the user has chosen...
     """
     main_menu = f"""
      {company_name}

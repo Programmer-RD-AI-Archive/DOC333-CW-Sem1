@@ -8,7 +8,7 @@ class Projects:
 
         Keyword arguments:
         code_of_project -- description
-        Return: Tuple[A boolean which states whether or not the operation was succesful, A string which has an output msg regarding the operation if it was successful or not...]
+        Return: Tuple[A boolean which states whether or not the operation was successful, A string which has an output msg regarding the operation if it was successful or not...]
         """
         try:
             index_of_project = project_names.index(code_of_project)
@@ -53,11 +53,23 @@ class Projects:
         project_status: str,
         workers: int,
     ) -> Tuple[bool, str]:
-        """sumary_line
+        """This function creates a new project
 
         Keyword arguments:
-        argument -- description
-        Return: return_description
+        status_list -- The list that is used for project statistics...
+        index -- The index of the project status in the status list
+        code_of_project -- The code of the project
+        clients_name -- The project's clients name
+        start_date -- The start date of the project
+        expected_end_date -- The expected end date of the project
+        number_of_workers -- The number of workers required for the project
+        project_status -- The status of the project out of (ongoing,on hold, completed)
+        workers -- total number of workers in the organization
+
+        Return: Tuple[
+            A boolean which shows if the function successfully executed or not,
+            The message which will be displayed to the user
+        ]
         """
         try:
             status_list[index] += 1
@@ -89,11 +101,23 @@ class Projects:
         number_of_workers: str,
         project_status: str,
     ) -> Tuple[bool, str]:
-        """sumary_line
+        """An function that updates the project details
 
         Keyword arguments:
-        argument -- description
-        Return: return_description
+        status_list -- The list that is used for project statistics...
+        index -- The index of the new project status in the status_list
+        previous_index -- The index of the previous project status in the status_list
+        code_of_project -- The project code of the project
+        clients_name -- The (updated / usual) client name
+        start_date -- The (updated / usual) start date
+        expected_end_date -- The (updated / usual) end date
+        number_of_workers -- The (updated / usual) number of workers
+        project_status -- The (updated / usual) project status
+
+        Return: Tuple[
+            A boolean which shows if the function successfully executed or not,
+            The message which will be displayed to the user
+        ]
         """
         try:
             status_list[index] += 1
