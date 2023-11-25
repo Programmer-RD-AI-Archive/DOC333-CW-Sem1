@@ -6,7 +6,7 @@ class Projects:
     def remove_completed_projects(
         code_of_project: str,
         every_project: list,
-        workers: int,
+        workers_tot: int,
         stats_list: list,
         complete_projects: list,
         possible_stats: list,
@@ -16,7 +16,7 @@ class Projects:
         Keyword arguments:
         code_of_project (str) -- The code of the project that will be removed
         every_project (list) -- A list which contains all the projects which haven't been removed
-        workers (int) -- The number of workers
+        workers_tot (int) -- The number of workers
         stats_list (list) -- The list that tracks the statistics for choice (5)
         complete_projects (list) -- The list which contains all removed completed projects
         possible_stats (list) -- All the possible status
@@ -44,15 +44,15 @@ class Projects:
                 number_of_workers,
                 actual_end_date,
             ]
-            workers += number_of_workers
+            workers_tot += number_of_workers
             stats_list[index] -= 1
             stats_list[possible_stats.index("completed")] += 1
             complete_projects.append(completed_project_details)
             del every_project[index_of_project]
             del project_names[index_of_project]
-            return (True, "Successfully removed completed projects.", workers)
+            return (True, "Successfully removed completed projects.", workers_tot)
         except Exception as e:
-            return (False, e, workers)
+            return (False, e, workers_tot)
 
     @staticmethod
     def create_project(
