@@ -14,7 +14,7 @@ class Verification:
         if len(splitted_date) != 3:
             print("Enter a valid format of the date..!")
             return self.date_verification(msg)
-        month, date, yr = splitted_date[0], splitted_date[1], splitted_date[2]
+        month, date, _ = splitted_date[0], splitted_date[1], splitted_date[2]
         if int(month) > 12:
             print("Enter a valid month..!")
             return self.date_verification(msg)
