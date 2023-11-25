@@ -17,11 +17,11 @@ redirect_to = None
 class Projects:
     @staticmethod
     def remove_completed_projects(code_of_project: str) -> Tuple[bool, str]:
-        """sumary_line
+        """Remove completed projects
 
         Keyword arguments:
-        argument -- description
-        Return: return_description
+        code_of_project -- description
+        Return: Tuple[A boolean which states whether or not the operation was succesful, A string which has an output msg regarding the operation if it was successful or not...]
         """
         try:
             index_of_project = project_names.index(code_of_project)
@@ -286,7 +286,7 @@ while execute:
     """
         )
         code_of_project = str(input("Project Code : "))
-        if code_of_project.replace(" ","") == "0":
+        if code_of_project.replace(" ", "") == "0":
             continue
         clients_name = str(input("Clients Name : "))
         start_date = date_verification("Start Date (MM/DD/YYYY) : ")
