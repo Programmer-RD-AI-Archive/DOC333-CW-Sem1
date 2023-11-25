@@ -2,8 +2,7 @@ from Corporation import *
 
 
 class Verification:
-    @staticmethod
-    def date_verification(msg: str) -> str:
+    def date_verification(self, msg: str) -> str:
         """A function that uses recursion to make sure that the entered date is in a correct format...
 
         Keyword arguments:
@@ -14,18 +13,18 @@ class Verification:
         splitted_date = date.split(date[2] if len(date) > 3 else " ")
         if len(splitted_date) != 3:
             print("Enter a valid format of the date..!")
-            return date_verification(msg)
+            return self.date_verification(msg)
         month, date, yr = splitted_date[0], splitted_date[1], splitted_date[2]
         if int(month) > 12:
             print("Enter a valid month..!")
-            return date_verification(msg)
+            return self.date_verification(msg)
         if int(date) > 31:
             print("Enter a valid date..!")
-            return date_verification(msg)
+            return self.date_verification(msg)
         return date
 
-    @staticmethod
-    def enter_project_status(
+    def project_status_verification(
+        self,
         msg: str = "Project Status (ongoing/completed/on hold) : ",
         update_status: bool = False,
     ) -> Tuple[str, list, int]:
@@ -43,7 +42,7 @@ class Verification:
         project_state = str(input(msg)).replace(" ", "").lower()
         if project_state not in possible_inputs:
             print("The entered project status is incorrect...")
-            return enter_project_status()
+            return self.project_status_verification()
         if update_status:
             statistics_list[possible_inputs.index(project_state)] += 1
         return (

@@ -12,8 +12,8 @@ def menu(
     Keyword arguments:
     redirect (bool) -- A boolean to know whether or not the user will be redirected
     to (int) -- The choice that user will be redirected to
-    company_name (str) -- description
-    msg (str) -- description
+    company_name (str) -- The companies name that will be displayed
+    msg (str) -- The message that will be displayed to the user asking their next choice
 
     Return: (str) the next choice which the user has chosen...
     """
