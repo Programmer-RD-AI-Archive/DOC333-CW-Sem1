@@ -5,19 +5,21 @@ class Projects:
     @staticmethod
     def remove_completed_projects(
         code_of_project: str,
-        all_projects: list,
+        every_project: list,
         workers: int,
-        statistics_list: list,
-        completed_projects: list,
+        stats_list: list,
+        complete_projects: list,
+        possible_stats: list,
     ) -> Tuple[bool, str]:
         """Remove completed projects
 
         Keyword arguments:
         code_of_project (str) -- The code of the project that will be removed
-        all_projects (list) -- A list which contains all the projects which haven't been removed
+        every_project (list) -- A list which contains all the projects which haven't been removed
         workers (int) -- The number of workers
-        statistics_list (list) -- The list that tracks the statistics for choice (5)
-        completed_projects (list) -- The list which contains all removed completed projects
+        stats_list (list) -- The list that tracks the statistics for choice (5)
+        complete_projects (list) -- The list which contains all removed completed projects
+        possible_stats (list) -- All the possible status
 
         Return: Tuple[A boolean which states whether or not the operation was successful, A string which has an output msg regarding the operation if it was successful or not.]
         """
@@ -33,7 +35,7 @@ class Projects:
                 number_of_workers,
                 _,
                 index,
-            ) = all_projects[index_of_project]
+            ) = every_project[index_of_project]
             completed_project_details = [
                 code_of_project,
                 clients_name,
@@ -43,10 +45,10 @@ class Projects:
                 actual_end_date,
             ]
             workers += number_of_workers
-            statistics_list[index] -= 1
-            statistics_list[1] += 1
-            completed_projects.append(completed_project_details)
-            del all_projects[index_of_project]
+            stats_list[index] -= 1
+            stats_list[possible_stats.index("completed")] += 1
+            complete_projects.append(completed_project_details)
+            del every_project[index_of_project]
             del project_names[index_of_project]
             return (True, "Successfully removed completed projects.", workers)
         except Exception as e:
@@ -62,7 +64,7 @@ class Projects:
         expected_end_date: str,
         number_of_workers: str,
         project_status: str,
-        workers: int,
+        workers_tot: int,
     ) -> Tuple[bool, str]:
         """This function creates a new project
 
@@ -75,7 +77,7 @@ class Projects:
         expected_end_date (str) -- The expected end date of the project
         number_of_workers (str) -- The number of workers required for the project
         project_status (str) -- The status of the project out of (ongoing,on hold, completed)
-        workers (int) -- total number of workers in the organization
+        workers_tot (int) -- total number of workers in the organization
 
         Return: Tuple[
             A boolean which shows if the function successfully executed or not,
@@ -95,10 +97,10 @@ class Projects:
             ]
             project_names.append(code_of_project)
             all_projects.append(project_data)
-            workers -= number_of_workers
-            return (True, "Successfully created a new project", workers)
+            workers_tot -= number_of_workers
+            return (True, "Successfully created a new project", workers_tot)
         except Exception as e:
-            return (False, e, workers)
+            return (False, e, workers_tot)
 
     @staticmethod
     def update_project_details(
@@ -112,7 +114,7 @@ class Projects:
         number_of_workers: str,
         project_status: str,
         current_workers: int,
-        workers: int,
+        workers_tot: int,
     ) -> Tuple[bool, str]:
         """An function that updates the project details
 
@@ -127,6 +129,7 @@ class Projects:
         number_of_workers (str) -- The (updated / usual) number of workers
         project_status (str) -- The (updated / usual) project status
         current_workers (int) -- The number of workers before the project was updated
+        workers_tot (int) -- The total number of workers
 
         Return: Tuple[
             A boolean which shows if the function successfully executed or not,
@@ -134,8 +137,8 @@ class Projects:
         ]
         """
         try:
-            workers += current_workers
-            workers -= number_of_workers
+            workers_tot += current_workers
+            workers_tot -= number_of_workers
             status_list[index] += 1
             status_list[previous_index] -= 1
             project_data = [
@@ -149,6 +152,6 @@ class Projects:
             ]
             index = project_names.index(code_of_project)
             all_projects[index] = project_data
-            return (True, "Project details updated successfully", workers)
+            return (True, "Project details updated successfully", workers_tot)
         except Exception as e:
-            return (False, e, workers)
+            return (False, e, workers_tot)
