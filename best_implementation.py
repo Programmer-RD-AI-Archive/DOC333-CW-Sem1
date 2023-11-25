@@ -10,11 +10,19 @@ execute = True
 project_names = []
 possible_inputs = ["ongoing", "completed", "onhold"]
 statistics_list = [0] * len(possible_inputs)
+redirect_choice = False
+redirect_to = None
 
 
 class Projects:
     @staticmethod
     def remove_completed_projects(code_of_project: str) -> Tuple[bool, str]:
+        """sumary_line
+
+        Keyword arguments:
+        argument -- description
+        Return: return_description
+        """
         try:
             index_of_project = project_names.index(code_of_project)
             date_time = datetime.datetime.now()
@@ -56,7 +64,14 @@ class Projects:
         expected_end_date: str,
         number_of_workers: str,
         project_status: str,
+        workers: int,
     ) -> Tuple[bool, str]:
+        """sumary_line
+
+        Keyword arguments:
+        argument -- description
+        Return: return_description
+        """
         try:
             status_list[index] += 1
             project_data = [
@@ -71,9 +86,9 @@ class Projects:
             project_names.append(code_of_project)
             all_projects.append(project_data)
             workers -= number_of_workers
-            return (True, "Successfully created a new project...")
+            return (True, "Successfully created a new project...", workers)
         except Exception as e:
-            return (False, e)
+            return (False, e, workers)
 
     @staticmethod
     def update_project_details(
@@ -87,6 +102,12 @@ class Projects:
         number_of_workers: str,
         project_status: str,
     ) -> Tuple[bool, str]:
+        """sumary_line
+
+        Keyword arguments:
+        argument -- description
+        Return: return_description
+        """
         try:
             status_list[index] += 1
             status_list[previous_index] -= 1
@@ -106,7 +127,40 @@ class Projects:
             return (False, e)
 
 
-def menu(company_name: str = company_name, msg: str = "Enter your choice: ") -> str:
+def date_verification(msg: str) -> str:
+    """sumary_line
+
+    Keyword arguments:
+    argument -- description
+    Return: return_description
+    """
+    date = input(msg)
+    splitted_date = date.split(date[2] if len(date) > 3 else " ")
+    if len(splitted_date) != 3:
+        print("Enter a valid format of the date..!")
+        return date_verification(msg)
+    month, date, yr = splitted_date[0], splitted_date[1], splitted_date[2]
+    if int(month) > 12:
+        print("Enter a valid month..!")
+        return date_verification(msg)
+    if int(date) > 31:
+        print("Enter a valid date..!")
+        return date_verification(msg)
+    return date
+
+
+def menu(
+    redirect: bool = False,
+    to: int = None,
+    company_name: str = company_name,
+    msg: str = "Enter your choice: ",
+) -> str:
+    """sumary_line
+
+    Keyword arguments:
+    argument -- description
+    Return: return_description
+    """
     main_menu = f"""
      {company_name}
      Main Menu
@@ -117,9 +171,8 @@ def menu(company_name: str = company_name, msg: str = "Enter your choice: ") -> 
      5. Project statics.
      6. Exit
     """
-    print(main_menu)
-    choice = str(input(msg))
-    return choice
+    print("Redirecting..." if redirect else main_menu)
+    return to if redirect else str(input(msg))
 
 
 def enter_project_status(
@@ -151,7 +204,8 @@ def enter_project_status(
 
 
 while execute:
-    choice = menu()
+    choice = menu(redirect=redirect_choice, to=redirect_to)
+    redirect_choice, redirect_to = False, None
     if choice == "1":
         print(
             f"""
@@ -163,13 +217,13 @@ while execute:
         if code_of_project == "0":
             continue
         clients_name = str(input("Clients Name : "))
-        start_date = str(input("Start Date : "))
-        expected_end_date = str(input("Expected end date : "))
+        start_date = date_verification("Start Date (MM/DD/YYYY) : ")
+        expected_end_date = date_verification("Expected end date (MM/DD/YYYY) : ")
         number_of_workers = int(input("Numbers of Workers : "))
         project_status, status_list, index = enter_project_status()
         save = str(input("Do you want to save the project(Yes/No)? "))
         if (number_of_workers <= workers) and (save.upper() == "YES"):
-            execution_status, response_msg = Projects().create_project(
+            execution_status, response_msg, workers = Projects().create_project(
                 status_list,
                 index,
                 code_of_project,
@@ -178,6 +232,7 @@ while execute:
                 expected_end_date,
                 number_of_workers,
                 project_status,
+                workers,
             )
             print(f"{response_msg} ({execution_status})")
         else:
@@ -231,11 +286,11 @@ while execute:
     """
         )
         code_of_project = str(input("Project Code : "))
-        if code_of_project == "0":
+        if code_of_project.replace(" ","") == "0":
             continue
         clients_name = str(input("Clients Name : "))
-        start_date = str(input("Start Date : "))
-        expected_end_date = str(input("Expected end date : "))
+        start_date = date_verification("Start Date (MM/DD/YYYY) : ")
+        expected_end_date = date_verification("Expected end date (MM/DD/YYYY) : ")
         number_of_workers = int(input("Numbers of Workers : "))
         project_status, status_list, index = enter_project_status()
         save = str(input("Do you want to update the project details (Yes/No)?"))
@@ -281,7 +336,9 @@ while execute:
         for idx, item in enumerate(possible_inputs):
             print(f"Number of {item} projects : {statistics_list[idx]}")
         print(f"Number of available workers : {workers}")
-        add_project = str(input("Do you want to add the project (Yes/No)?"))  # TODO
+        add_project = str(input("Do you want to add the project (Yes/No)?"))
+        if add_project.upper() == "YES":
+            redirect_choice, redirect_to = True, "1"
 
     elif choice == "6":
         execute = False
