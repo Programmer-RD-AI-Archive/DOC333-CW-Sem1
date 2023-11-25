@@ -178,7 +178,7 @@ mkl-fft==1.3.6
 mkl-random @ file:///work/mkl/mkl_random_1682950433854/work
 mkl-service==2.4.0
 more-itertools @ file:///tmp/build/80754af9/more-itertools_1637733554872/work
-mpmath==1.2.1
+mpmath==1.3.0
 msgpack @ file:///work/ci_py311/msgpack-python_1676823037805/work
 multidict @ file:///work/ci_py311/multidict_1676825314105/work
 multipledispatch @ file:///work/ci_py311/multipledispatch_1676841220684/work
