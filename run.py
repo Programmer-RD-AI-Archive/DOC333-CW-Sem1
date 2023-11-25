@@ -137,6 +137,7 @@ while execute:
                 project_status,
                 current_workers,
                 workers,
+                possible_inputs,
             )
             print(f"{response_msg} ({execution_status})")
         else:
