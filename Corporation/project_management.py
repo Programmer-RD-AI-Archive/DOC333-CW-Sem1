@@ -31,7 +31,7 @@ class Projects:
                 start_date,
                 expected_end_date,
                 number_of_workers,
-                project_status,
+                _,
                 index,
             ) = all_projects[index_of_project]
             completed_project_details = [
