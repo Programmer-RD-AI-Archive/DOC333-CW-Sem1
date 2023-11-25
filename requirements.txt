@@ -19,7 +19,7 @@ astroid @ file:///work/ci_py311/astroid_1676920975848/work
 astropy @ file:///work/ci_py311_2/astropy_1679335217840/work
 asttokens @ file:///opt/conda/conda-bld/asttokens_1646925590279/work
 async-timeout @ file:///work/ci_py311/async-timeout_1676826962453/work
-atomicwrites==1.4.0
+atomicwrites==1.4.1
 attrs @ file:///work/ci_py311/attrs_1676822758931/work
 Automat @ file:///tmp/build/80754af9/automat_1600298431173/work
 autopep8 @ file:///opt/conda/conda-bld/autopep8_1650463822033/work
