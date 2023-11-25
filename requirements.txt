@@ -46,7 +46,7 @@ charset-normalizer @ file:///tmp/build/80754af9/charset-normalizer_1630003229654
 click @ file:///work/ci_py311/click_1676825163161/work
 cloudpickle @ file:///croot/cloudpickle_1683040006038/work
 clyent==1.2.2
-cmake==3.27.0
+cmake==3.27.7
 colorama @ file:///work/ci_py311/colorama_1676827038675/work
 colorcet @ file:///work/ci_py311/colorcet_1676839173519/work
 comm @ file:///work/ci_py311/comm_1677709131612/work
