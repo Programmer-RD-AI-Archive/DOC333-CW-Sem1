@@ -65,7 +65,7 @@ constantly==15.1.0
 contourpy @ file:///work/ci_py311/contourpy_1676827066340/work
 cookiecutter @ file:///opt/conda/conda-bld/cookiecutter_1649151442564/work
 cryptography @ file:///work/ci_py311_2/cryptography_1679335572456/work
-cssselect==1.1.0
+cssselect==1.2.0
 cycler @ file:///tmp/build/80754af9/cycler_1637851556182/work
 cytoolz @ file:///work/ci_py311/cytoolz_1676830405847/work
 daal4py==2023.1.1
