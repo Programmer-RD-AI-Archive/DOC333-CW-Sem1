@@ -199,7 +199,7 @@ numba @ file:///croot/numba_1684245461770/work
 numexpr @ file:///croot/numexpr_1683221822650/work
 numpy @ file:///work/mkl/numpy_and_numpy_base_1682953417311/work
 numpydoc @ file:///work/ci_py311/numpydoc_1676845056742/work
-nvidia-cublas-cu11==11.10.3.66
+nvidia-cublas-cu11==11.11.3.6
 nvidia-cuda-cupti-cu11==11.7.101
 nvidia-cuda-nvrtc-cu11==11.7.99
 nvidia-cuda-runtime-cu11==11.7.99
