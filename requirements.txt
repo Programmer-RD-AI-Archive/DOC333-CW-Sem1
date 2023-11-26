@@ -68,7 +68,7 @@ cryptography @ file:///work/ci_py311_2/cryptography_1679335572456/work
 cssselect==1.1.0
 cycler @ file:///tmp/build/80754af9/cycler_1637851556182/work
 cytoolz @ file:///work/ci_py311/cytoolz_1676830405847/work
-daal4py==2023.1.1
+daal4py==2023.2.1
 dask @ file:///croot/dask-core_1686782904390/work
 dataclasses @ file:///home/conda/feedstock_root/build_artifacts/dataclasses_1628958434797/work
 datasets @ file:///croot/datasets_1684482929171/work
