@@ -1,5 +1,6 @@
 from Corporation import *
 
+
 while execute:
     choice = menu(redirect=redirect_choice, to=redirect_to)
     redirect_choice, redirect_to = False, None
@@ -85,11 +86,15 @@ while execute:
         )
         new_no_of_workers = int(input("Number Workers to Add : "))
         save = str(input("Do you want to add ? (Yes / No) "))
-        if save.upper() == "YES":
+        if save.upper() == "YES" and workers > 0:
             workers += new_no_of_workers
             print("Workers added successfully..!")
         else:
-            print("Workers were not added..!")
+            print(
+                "Workers must be more than 0..!"
+                if workers <= 0
+                else "Workers were not added..!"
+            )
 
     elif choice == "4":
         print(
