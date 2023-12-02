@@ -108,6 +108,9 @@ class Projects:
         number_of_workers: str,
         project_status: str,
         workers_tot: int,
+        every_project: list,
+        stats_list: list,
+        possible_stats: list,
     ) -> Tuple[bool, str]:
         """This function creates a new project
 
@@ -121,6 +124,9 @@ class Projects:
         number_of_workers (str) -- The number of workers required for the project
         project_status (str) -- The status of the project out of (ongoing,on hold, completed)
         workers_tot (int) -- total number of workers in the organization
+        every_project (list) -- A list which contains all the projects which haven't been removed
+        stats_list (list) -- The list that tracks the statistics for choice (5)
+        possible_stats (list) -- All the possible status
 
         Return: Tuple[
             A boolean which shows if the function successfully executed or not,
@@ -140,8 +146,6 @@ class Projects:
             ]
             project_names.append(code_of_project)
             all_projects.append(project_data)
-            if project_status == "ongoing":
-                workers_tot -= number_of_workers
             return (True, "Successfully created a new project", workers_tot)
         except Exception as e:
             return (False, e, workers_tot)
@@ -305,6 +309,9 @@ while execute:
                 number_of_workers,
                 project_status,
                 workers,
+                all_projects,
+                statistics_list,
+                possible_inputs,
             )
             print(f"{response_msg} ({execution_status})")
         else:
@@ -334,7 +341,7 @@ while execute:
                 workers,
                 statistics_list,
                 completed_projects,
-                possible_inputs
+                possible_inputs,
             )
             print(f"{response_msg} ({execution_status})")
         else:
