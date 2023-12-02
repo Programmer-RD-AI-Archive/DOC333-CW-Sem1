@@ -140,7 +140,8 @@ class Projects:
             ]
             project_names.append(code_of_project)
             all_projects.append(project_data)
-            workers_tot -= number_of_workers
+            if project_status == "ongoing":
+                workers_tot -= number_of_workers
             return (True, "Successfully created a new project", workers_tot)
         except Exception as e:
             return (False, e, workers_tot)
@@ -333,6 +334,7 @@ while execute:
                 workers,
                 statistics_list,
                 completed_projects,
+                possible_inputs
             )
             print(f"{response_msg} ({execution_status})")
         else:
@@ -351,7 +353,7 @@ while execute:
         )
         new_no_of_workers = int(input("Number Workers to Add : "))
         save = str(input("Do you want to add ? (Yes / No) "))
-        if save.upper() == "YES" and workers > 0:
+        if save.upper() == "YES" and new_no_of_workers > 0:
             workers += new_no_of_workers
             print("Workers added successfully..!")
         else:
