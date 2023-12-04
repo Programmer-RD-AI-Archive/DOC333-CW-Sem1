@@ -1,307 +1,237 @@
-import datetime
-
-projects = {}
-workers_tracker = 0
-completed_projects = {}
-
-
-def add_project_code_verification(msg: str) -> str:  # TODO
-    """sumary_line
-
-    Keyword arguments:
-    argument -- description
-    Return: return_description
-    """
-    project_code = str(input(msg))
-    # get the `projects` dictionaries keys and turn it into a list and then use a for loop to go over it...
-    if project_code in list(projects.keys()):
-        print("Project Code already exists..!")
-        # return the same function (recursion)
-        return add_project_code_verification(msg)
-    return project_code  # return project_code
-
-
-def add_project(
-    project_code: str,
-    client_name: str,
-    start_date: str,
-    expected_end_date: str,
-    num_workers: int,
-    status: str,
-    workers_tracker: int,
-) -> int:
-    """sumary_line
-
-    Keyword arguments:
-    argument -- description
-    Return: return_description
-    """
-    status = status.lower().replace(" ", "")
-    project_details = {
-        "Client's Name": client_name,
-        "Start Date": start_date,
-        "Expected End Date": expected_end_date,
-        "Number of Workers": num_workers,
-        "Status": status,
-    }
-    if num_workers > workers_tracker:
-        print("Not enough workers")
-        return workers_tracker
-    if status == "ongoing":
-        workers_tracker = reclaim_workers(num_workers, workers_tracker)
-    projects[project_code] = project_details
-    return workers_tracker
-
-
-def remove_project(project_code, project_list, workers_tracker):
-    """sumary_line
-
-    Keyword arguments:
-    argument -- description
-    Return: return_description
-    """
-    if project_code in list(project_list.keys()):
-        old_status = project_list[project_code]["Status"]
-        date_time = datetime.datetime.now()
-        actual_end_date = date_time.strftime("%d/%m/%Y")
-        project_details = project_list[project_code]
-        project_details["Actual End Date"] = actual_end_date
-        completed_projects[project_code] = project_details
-        if old_status == "ongoing":
-            workers_tracker = release_workers(project_code, workers_tracker)
-        project_details["Status"] = "completed"
-        del project_list[project_code]
-        print("Project removed successfully!")
-    else:
-        print("Project not found in the list.")
-    return workers_tracker, project_list
-
-
-def add_workers(num_workers, workers_tracker):
-    """sumary_line
-
-    Keyword arguments:
-    argument -- description
-    Return: return_description
-    """
-    workers_tracker += num_workers
-    print(f"{num_workers} new workers added successfully!")
-    return workers_tracker
-
-
-def update_ongoing_project(project_code, workers_tracker, project_list):
-    """sumary_line
-
-    Keyword arguments:
-    argument -- description
-    Return: return_description
-    """
-    print("1. Update Client's Name")
-    print("2. Update Start Date")
-    print("3. Update Expected End Date")
-    print("4. Update Number of Workers")
-    print("5. Update Project Status")
-    update_choice = input("Enter the number corresponding to the detail to update: ")
-    if update_choice == "1":
-        new_client_name = input("Enter new Client's Name: ")
-        projects[project_code]["Client's Name"] = new_client_name
-        print("Client's Name updated successfully!")
-    elif update_choice == "2":
-        new_start_date = input("Enter new Start Date (YYYY-MM-DD): ")
-        projects[project_code]["Start Date"] = new_start_date
-        print("Start Date updated successfully!")
-    elif update_choice == "3":
-        new_expected_end_date = input("Enter new Expected End Date (YYYY-MM-DD): ")
-        projects[project_code]["Expected End Date"] = new_expected_end_date
-        print("Expected End Date updated successfully!")
-    elif update_choice == "4":
-        new_num_workers = int(input("Enter new Number of Workers: "))
-        workers_tracker = (
-            workers_tracker
-            + projects[project_code]["Number of Workers"]
-            - new_num_workers
-        )
-        projects[project_code]["Number of Workers"] = new_num_workers
-        print("Number of Workers updated successfully!")
-    elif update_choice == "5":
-        new_status = (
-            input("Enter new Project Status (ongoing, on hold, completed): ")
-            .lower()
-            .replace(" ", "")
-        )
-        old_status = projects[project_code]["Status"]
-        projects[project_code]["Status"] = new_status
-        if new_status == "onhold" and old_status != new_status:
-            workers_tracker = release_workers(
-                project_code,
-                workers_tracker,
-            )
-        if (
-            new_status == "ongoing"
-            and old_status == "onhold"
-            and old_status != new_status
-        ):
-            workers_tracker = reclaim_workers(
-                projects[project_code]["Number of Workers"], workers_tracker
-            )
-        if new_status == "completed":
-            workers_tracker, project_list = remove_project(
-                project_code, project_list, workers_tracker, old_status
-            )
-        if old_status == "completed":
-            del completed_projects[project_code]
-        print("Project Status updated successfully!")
-    else:
-        print("Invalid update choice.")
-    return workers_tracker
-
-
-def reclaim_workers(num_workers_reclained, workers_tracker):
-    """sumary_line
-
-    Keyword arguments:
-    argument -- description
-    Return: return_description
-    """
-    workers_tracker -= num_workers_reclained
-    return workers_tracker
-
-
-def release_workers(project_code, workers_tracker):
-    """sumary_line
-
-    Keyword arguments:
-    argument -- description
-    Return: return_description
-    """
-    num_workers_released = projects[project_code]["Number of Workers"]
-    workers_tracker += num_workers_released
-    return workers_tracker
-
-
-def project_statistics(workers_tracker):
-    """sumary_line
-
-    Keyword arguments:
-    argument -- description
-    Return: return_description
-    """
-    num_ongoing = 0
-    num_completed = 0
-    num_on_hold = 0
-    for project in projects.values():
-        if project["Status"] == "onhold":
-            num_on_hold += 1
-        elif project["Status"] == "completed":
-            num_completed += 1
-        else:
-            num_ongoing += 1
-    print(f"\nNumber of Ongoing Projects: {num_ongoing}")
-    print(f"Number of Completed Projects: {len(completed_projects) + num_completed}")
-    print(f"Number of On Hold Projects: {num_on_hold}")
-    print(f"Number of Available Workers to Assign: {workers_tracker}")
-    wanna_add_project = str(input("Do you want to add a new project (Yes/No)?: "))
-    if wanna_add_project.lower().replace(" ", "") == "yes":
-        print("XYZ Company".center(100))
-        print("Add a new project".center(100))
-        project_code = add_project_code_verification("Enter Project Code: ")
-        client_name = input("Enter Client's Name: ")
-        start_date = input("Enter Start Date (DD/MM/YYYY): ")
-        end_date = input("Enter Expected End Date (DD/MM/YYYY): ")
-        num_workers = int(input("Enter Number of Workers: "))
-        status = input("Enter Project Status (ongoing, onhold, completed): ")
-        save = str(input("Do you want to add the project (Yes/No)?: "))
-        if save.lower().replace(" ", "") == "yes":
-            workers_tracker = add_project(
-                project_code,
-                client_name,
-                start_date,
-                end_date,
-                num_workers,
-                status,
-                workers_tracker,
-            )
+pro_code = 0
+cli_Name = 0
+str_date = 0
+exp_end_date = 0
+num_of_workers = 0
+pro_status = 0
+pro_save = []
+project_details = []
+projects = []
+codes_of_projects = []
+avl_workers_list = []
+remove = 0
+add_workers = 0
+total_workers = 0
+avl_workers = 0
+update = 0
+num_of_ongoing_pro = 0
+num_of_com_pro = 0
+num_of_onnhold_pro = 0
 
 
 while True:
-    print("XYZ Company".center(100))
-    print("Main Menu".center(100))
-    print("\n1. Add a new project to existing projects.")
-    print("2. Remove a completed project from existing projects.")
-    print("3. Add new workers to available workers group.")
-    print("4. Update details on ongoing projects.")
-    print("5. Project statistics")
-    print("6. Exit")
+    print(
+        """
+            
+                           XYZ Company
+                            Main Menu
+          
+    1. Add a new project to existing projects.
+    2. Remove a completed project from existing projects.
+    3. Add new workers to available workers group.
+    4. Update details on ongoing projects.
+    5. Project Statistics
+    6. Exit
+            """
+    )
 
-    choice = input("\t \t \t Enter your choice:")
+    # Get the choice
 
-    if choice == "1":
-        print("XYZ Company".center(100))
-        print("Add a new project".center(100))
-        project_code = add_project_code_verification("Enter Project Code: ")
-        if project_code == "0":
-            continue
-        client_name = input("Enter Client's Name: ")
-        start_date = input("Enter Start Date (DD/MM/YYYY): ")
-        end_date = input("Enter Expected End Date (DD/MM/YYYY): ")
-        num_workers = int(input("Enter Number of Workers: "))
-        status = input("Enter Project Status (ongoing, onhold, completed): ")
-        save = str(input("Do you want to add the project (Yes/No)?: "))
-        if save.lower().replace(" ", "") == "yes":
-            workers_tracker = add_project(
-                project_code,
-                client_name,
-                start_date,
-                end_date,
-                num_workers,
-                status,
-                workers_tracker,
-            )
+    your_choice = str(input("Enter Your Choice - "))
 
-    elif choice == "2":
-        print("XYZ Company".center(100))
-        print("Remove Completed Project".center(100))
-        project_code = input("Enter Project Code to remove from ongoing projects: ")
-        save = str(input("Do you want to remove the project (Yes/No)?: "))
-        if save.lower().replace(" ", "") == "yes":
-            workers_tracker, projects = remove_project(
-                project_code, projects, workers_tracker
-            )
+    # If the choice is 1
 
-    elif choice == "3":
-        print("XYZ Company".center(100))
-        print("Add workers".center(100))
-        num_new_workers = int(input("Enter the number of new workers to add: "))
-        save = str(input("Do you want to add the workers (Yes/No)?: "))
-        if save.lower().replace(" ", "") == "yes":
-            workers_tracker = add_workers(num_new_workers, workers_tracker)
-
-    elif choice == "4":
-        print("XYZ Company".center(100))
-        print("update project".center(100))
-        project_code = input(
-            "Enter Project Code to update details (Enter '0' to cancel): "
+    if your_choice == "1":
+        print(
+            """            XYZ Company
+                         Add A New Project     """
         )
-        save = str(input("Do you want to update the project (Yes/No)?: "))
-        if (
-            project_code == "0"
-            or project_code not in list(projects.keys())
-            or save.lower().replace(" ", "") == "no"
-        ):
-            continue
+
+        pro_code = str(input("enter the project code - "))
+        cli_Name = str(input("enter the client name - "))
+        str_date = str(input("enter the start date - "))
+        exp_end_date = input("enter the expected end date - ")
+        num_of_workers = int(input("enter the number of workers - "))
+        pro_status = (
+            input("enter the project status(ongoing / completed / hold) ")
+            .lower()
+            .replace(" ", "")
+        )
+        pro_save = (
+            input("Do you want to save the project? (yes/no) ").lower().replace(" ", "")
+        )
+
+        # if the user enter 'yes'
+
+        if (pro_save == "yes") and int(avl_workers >= num_of_workers):
+            print("we can accept your project")
+            project_details = [
+                pro_code,
+                cli_Name,
+                str_date,
+                exp_end_date,
+                num_of_workers,
+                pro_status,
+            ]
+            if pro_status == "ongoing":
+                num_of_ongoing_pro = num_of_ongoing_pro + 1
+            if pro_status == "onhold":
+                num_of_onnhold_pro = num_of_onnhold_pro + 1
+            if pro_status == "completed":
+                num_of_com_pro = num_of_com_pro + 1
+
+            avl_workers = avl_workers - num_of_workers
+            projects.append(project_details)
+            codes_of_projects.append(pro_code)
+            print(projects)
+            print(codes_of_projects)
+            print("The Project Was Saved.")
         else:
-            workers_tracker = update_ongoing_project(
-                project_code, workers_tracker, projects
-            )
+            print("Not Enough Workers. Project NOT Saved!")
 
-    elif choice == "5":
-        print("XYZ Company".center(100))
-        print("Project Statistics".center(100))
-        project_statistics(workers_tracker)
+    # check the project can accept or can not acceept
 
-    elif choice == "6":
-        print("Exiting...")
-        break
+    # when the choice is 2
 
+    elif your_choice == "2":
+        print(
+            """ 
+                        XYZ Company
+                Remove Completed Project
+            """
+        )
+        pro_code = str(input("Enter The Project Code - "))
+        remove = (
+            str(input("Do You Want To Remove The Project(yes/no)?"))
+            .lower()
+            .replace(" ", "")
+        )
+        if (remove == "yes") and (pro_code in codes_of_projects):
+            idx = codes_of_projects.index(pro_code)
+            num_of_workers = projects[idx][4]
+            pro_status = projects[idx][5]
+
+            if pro_status == "ongoing":
+                num_of_ongoing_pro = num_of_ongoing_pro - 1
+                num_of_com_pro = num_of_com_pro + 1
+            elif pro_status == "onhold":
+                num_of_onnhold_pro = num_of_onnhold_pro - 1
+                num_of_com_pro = num_of_com_pro + 1
+
+            avl_workers = avl_workers + num_of_workers
+            del projects[idx]
+            del codes_of_projects[idx]
+        else:
+            print("Project Was NOT Removed")
+
+    # when the choice is 3
+
+    elif your_choice == "3":
+        print(
+            """
+                        XYZ Company
+                        Add New Workers """
+        )
+
+        add_workers = int(input("Enter number workers to add - "))
+        add_workers_choice = (
+            input("Do you want to add (yes/no)? ").lower().replace(" ", "")
+        )
+        if add_workers_choice == "yes":
+            avl_workers = avl_workers + add_workers
+            print("The New Workers Added.")
+            print("Available Workers = ", avl_workers)
+        else:
+            print("The New Workers Are NOT Added")
+            print(avl_workers)
+            print("Available Workers = ", avl_workers)
+
+    # When the choice is 4
+
+    elif your_choice == "4":
+        print(
+            """
+                            XYZ Company
+                    Upadate Project Details
+                    """
+        )
+
+        pro_code = str(input("Enter the  project code - "))
+        cli_Name = str(input("Enter clients name - "))
+        str_date = str(input("Enter start date - "))
+        exp_end_date = str(input("Enter Expencted end Date - "))
+        updated_num_of_workers = int(input("Enter the number of workers - "))
+        updated_pro_status = (
+            str(input("ongoing or on hold or completed? ")).lower().replace(" ", "")
+        )
+        update = (
+            str(input("Do you  want to update the project details(yes/no)? "))
+            .lower()
+            .replace(" ", "")
+        )
+        idx = codes_of_projects.index(pro_code)
+
+        projects[idx] = [
+            pro_code,
+            cli_Name,
+            str_date,
+            exp_end_date,
+            num_of_workers,
+            updated_pro_status,
+        ]
+
+        if pro_status == "ongoing" and updated_pro_status == "onhold":
+            num_of_ongoing_pro = num_of_ongoing_pro - 1
+            num_of_onnhold_pro = num_of_onnhold_pro + 1
+            num_of_workers = num_of_workers + updated_num_of_workers
+
+        elif pro_status == "ongoing" and updated_pro_status == "completed":
+            num_of_ongoing_pro = num_of_ongoing_pro - 1
+            num_of_com_pro = num_of_com_pro + 1
+            num_of_workers = num_of_workers + updated_num_of_workers
+
+        elif pro_status == "onhold" and updated_pro_status == "ongoing":
+            num_of_ongoing_pro = num_of_ongoing_pro + 1
+            num_of_onnhold_pro = num_of_onnhold_pro - 1
+
+        elif pro_status == "onhold" and updated_pro_status == "completed":
+            num_of_com_pro = num_of_com_pro + 1
+            num_of_onnhold_pro = num_of_onnhold_pro - 1
+
+        elif pro_status == "ongoing" and updated_pro_status == "ongoing":
+            if num_of_workers > updated_num_of_workers:
+                avl_workers = avl_workers - (num_of_workers - updated_num_of_workers)
+
+            if num_of_workers < updated_num_of_workers:
+                avl_workers = avl_workers + (updated_num_of_workers - num_of_workers)
+
+        elif updated_pro_status == "completed":
+            print("The project is already completed")
+
+        print(projects)
+
+    # When the choice is 5
+
+    elif your_choice == "5":
+        print(
+            """
+                        XYZ Company
+                    Project Statistics """
+        )
+        print("\n")
+        print("Ongoing projects - ", num_of_ongoing_pro)
+        print("Completed projects - ", num_of_com_pro)
+        print("Onhold projects - ", num_of_onnhold_pro)
+        print("Number o available workers - ", avl_workers)
+
+        # num_of_com_pro = int(input("Enter the number of completed projects - "))
+        # num_of_onnhold_pro=int(input("Enter the number of on hold projects - "))
+        # num_of_avl_workers_assign=int(input("Enter the number of available workers to assign - "))
+
+    # When The Choice is 6
+
+    elif your_choice == "6":
+        print("Exiting")
+        False
     else:
-        print("Invalid choice. Please enter a valid option.")
+        print("Enter A Valid Choice")
