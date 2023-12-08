@@ -457,6 +457,7 @@ while execute:
             redirect_choice, redirect_to = True, "1"
 
     elif choice == "6":
+        print('Exiting Program...')
         execute = False
 
     else:
