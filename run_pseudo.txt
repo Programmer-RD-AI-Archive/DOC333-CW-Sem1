@@ -1,0 +1,957 @@
+IMPORT datetime
+
+from typing IMPORT Tuple
+
+
+
+SET company_name TO "XYZ Company"
+
+SET workers TO 0
+
+SET choice TO 0
+
+SET all_projects TO []
+
+SET completed_projects TO []
+
+SET execute TO True
+
+SET project_names TO []
+
+SET possible_INPUTs TO ["ongoing", "completed", "onhold"]
+
+SET statistics_list TO [0] * len(possible_INPUTs)
+
+SET redirect_choice TO False
+
+SET redirect_to TO None
+
+
+
+
+
+DEFINE FUNCTION menu(
+
+    SET redirect: bool TO False,
+
+    SET to: int TO None,
+
+    SET name_of_the_company: str TO company_name,
+
+    SET msg: str TO "Enter your choice: ",
+
+) -> str:
+
+    """This function finds the choice that should be displayed to the user next...
+
+
+
+    Keyword arguments:
+
+    redirect (bool) -- A boolean to know whether or not the user will be redirected
+
+    to (int) -- The choice that user will be redirected to
+
+    name_of_the_company (str) -- The companies name that will be displayed
+
+    msg (str) -- The message that will be displayed to the user asking their next choice
+
+
+
+    Return: (str) the next choice which the user has chosen...
+
+    """
+
+    SET main_menu TO f"""
+
+     {name_of_the_company}
+
+     Main Menu
+
+     1. Add a new project to existing projects.
+
+     2. Remove a completed project from existing projects.
+
+     3. Add new workers to available workers group.
+
+     4. Updates details on ongoing projects.
+
+     5. Project statics.
+
+     6. Exit
+
+    """
+
+    OUTPUT("Redirecting..." IF redirect else main_menu)
+
+    RETURN to IF redirect else str(INPUT(msg))
+
+
+
+
+
+DEFINE CLASS Projects:
+
+    @staticmethod
+
+    DEFINE FUNCTION remove_completed_projects(
+
+        code_of_project: str,
+
+        every_project: list,
+
+        workers_tot: int,
+
+        stats_list: list,
+
+        complete_projects: list,
+
+        possible_stats: list,
+
+    ) -> Tuple[bool, str]:
+
+        """Remove completed projects
+
+
+
+        Keyword arguments:
+
+        code_of_project (str) -- The code of the project that will be removed
+
+        every_project (list) -- A list which contains all the projects which haven't been removed
+
+        workers_tot (int) -- The number of workers
+
+        stats_list (list) -- The list that tracks the statistics FOR choice (5)
+
+        complete_projects (list) -- The list which contains all removed completed projects
+
+        possible_stats (list) -- All the possible status
+
+
+
+        Return: Tuple[A boolean which states whether or not the operation was successful, A string which has an output msg regarding the operation IF it was successful or not.]
+
+        """
+
+        TRY:
+
+            SET index_of_project TO project_names.index(code_of_project)
+
+            SET date_time TO datetime.datetime.now()
+
+            SET actual_end_date TO date_time.strftime("%m/%d/%Y")
+
+            (
+
+                code_of_project,
+
+                clients_name,
+
+                start_date,
+
+                expected_end_date,
+
+                number_of_workers,
+
+                _,
+
+                index,
+
+            SET ) TO every_project[index_of_project]
+
+            SET completed_project_details TO [
+
+                code_of_project,
+
+                clients_name,
+
+                start_date,
+
+                expected_end_date,
+
+                number_of_workers,
+
+                actual_end_date,
+
+            ]
+
+            workers_tot += number_of_workers
+
+            stats_list[index] -= 1
+
+            stats_list[possible_stats.index("completed")] += 1
+
+            complete_projects.append(completed_project_details)
+
+            del every_project[index_of_project]
+
+            del project_names[index_of_project]
+
+            RETURN (
+
+                True,
+
+                "Successfully removed completed projects.",
+
+                workers_tot,
+
+                status_list,
+
+                completed_projects,
+
+                every_project,
+
+                project_names,
+
+            )
+
+        except Exception as e:
+
+            RETURN (
+
+                False,
+
+                e,
+
+                workers_tot,
+
+                status_list,
+
+                completed_projects,
+
+                every_project,
+
+                project_names,
+
+            )
+
+
+
+    @staticmethod
+
+    DEFINE FUNCTION create_project(
+
+        status_list: list,
+
+        index: int,
+
+        code_of_project: str,
+
+        clients_name: str,
+
+        start_date: str,
+
+        expected_end_date: str,
+
+        number_of_workers: str,
+
+        project_status: str,
+
+        workers_tot: int,
+
+        every_project: list,
+
+        stats_list: list,
+
+        possible_stats: list,
+
+    ) -> Tuple[bool, str]:
+
+        """This function creates a new project
+
+
+
+        Keyword arguments:
+
+        status_list (list) -- The list that is used FOR project statistics
+
+        index (index) -- The index of the project status IN the status list
+
+        code_of_project (str) -- The code of the project
+
+        clients_name (str) -- The project's clients name
+
+        start_date (str) -- The start date of the project
+
+        expected_end_date (str) -- The expected end date of the project
+
+        number_of_workers (str) -- The number of workers required FOR the project
+
+        project_status (str) -- The status of the project out of (ongoing,on hold, completed)
+
+        workers_tot (int) -- total number of workers IN the organization
+
+        every_project (list) -- A list which contains all the projects which haven't been removed
+
+        stats_list (list) -- The list that tracks the statistics FOR choice (5)
+
+        possible_stats (list) -- All the possible status
+
+
+
+        Return: Tuple[
+
+            A boolean which shows IF the function successfully executed or not,
+
+            The message which will be displayed to the user
+
+        ]
+
+        """
+
+        TRY:
+
+            status_list[index] += 1
+
+            SET project_data TO [
+
+                code_of_project,
+
+                clients_name,
+
+                start_date,
+
+                expected_end_date,
+
+                number_of_workers,
+
+                project_status,
+
+                index,
+
+            ]
+
+            IF project_status EQUALS "ongoing":
+
+                workers_tot -= number_of_workers
+
+            project_names.append(code_of_project)
+
+            all_projects.append(project_data)
+
+            RETURN (True, "Successfully created a new project", workers_tot)
+
+        except Exception as e:
+
+            RETURN (False, e, workers_tot)
+
+
+
+    @staticmethod
+
+    DEFINE FUNCTION update_project_details(
+
+        status_list: list,
+
+        index: int,
+
+        previous_index: int,
+
+        code_of_project: str,
+
+        clients_name: str,
+
+        start_date: str,
+
+        expected_end_date: str,
+
+        number_of_workers: str,
+
+        project_status: str,
+
+        current_workers: int,
+
+        workers_tot: int,
+
+        previous_project_status: str,
+
+    ) -> Tuple[bool, str]:
+
+        """An function that updates the project details
+
+
+
+        Keyword arguments:
+
+        status_list (list) -- The list that is used FOR project statistics
+
+        index (int) -- The index of the new project status IN the status_list
+
+        previous_index (int) -- The index of the previous project status IN the status_list
+
+        code_of_project (str) -- The project code of the project
+
+        clients_name (str) -- The (updated / usual) client name
+
+        start_date (str) -- The (updated / usual) start date
+
+        expected_end_date (str) -- The (updated / usual) end date
+
+        number_of_workers (str) -- The (updated / usual) number of workers
+
+        project_status (str) -- The (updated / usual) project status
+
+        current_workers (int) -- The number of workers before the project was updated
+
+        workers_tot (int) -- The total number of workers
+
+        previous_project_status (str) -- The previous project status
+
+
+
+        Return: Tuple[
+
+            A boolean which shows IF the function successfully executed or not,
+
+            The message which will be displayed to the user
+
+        ]
+
+        """
+
+        TRY:
+
+            OUTPUT(
+
+                workers_tot,
+
+                current_workers,
+
+                number_of_workers,
+
+                workers_tot + (current_workers)
+
+                IF previous_project_status EQUALS "ongoing"
+
+                else 0,
+
+            )
+
+            IF number_of_workers > workers_tot + (
+
+                current_workers IF previous_project_status EQUALS "ongoing" else 0
+
+            ):
+
+                RETURN (False, "Workers chosen are too much", workers_tot)
+
+            IF project_status EQUALS "ongoing":
+
+                workers_tot -= number_of_workers
+
+            IF previous_project_status EQUALS "ongoing":
+
+                workers_tot += current_workers
+
+            status_list[index] += 1
+
+            status_list[previous_index] -= 1
+
+            SET project_data TO [
+
+                code_of_project,
+
+                clients_name,
+
+                start_date,
+
+                expected_end_date,
+
+                number_of_workers,
+
+                project_status,
+
+                index,
+
+            ]
+
+            SET index TO project_names.index(code_of_project)
+
+            SET all_projects[index] TO project_data
+
+            RETURN (True, "Project details updated successfully", workers_tot)
+
+        except Exception as e:
+
+            RETURN (False, e, workers_tot)
+
+
+
+
+
+DEFINE CLASS Verification:
+
+    DEFINE FUNCTION date_verification(self, msg: str) -> str:
+
+        """A function that uses recursion to make sure that the entered date is IN a correct format...
+
+
+
+        Keyword arguments:
+
+        msg (str) -- the message that should be displayed...
+
+        Return: A string which contains a correct date format...
+
+        """
+
+        SET date TO INPUT(msg)
+
+        SET # splitted_date TO date.split(date[2] IF len(date) > 3 else " ")
+
+        # IF len(splitted_date) != 3:
+
+        #     OUTPUT("Enter a valid format of the date..!")
+
+        #     RETURN self.date_verification(msg)
+
+        SET # month, date, _ TO splitted_date[0], splitted_date[1], splitted_date[2]
+
+        # IF int(month) > 12:
+
+        #     OUTPUT("Enter a valid month..!")
+
+        #     RETURN self.date_verification(msg)
+
+        # IF int(date) > 31:
+
+        #     OUTPUT("Enter a valid date..!")
+
+        #     RETURN self.date_verification(msg)
+
+        RETURN date
+
+
+
+    DEFINE FUNCTION project_status_verification(
+
+        self,
+
+        SET msg: str TO "Project Status (ongoing/completed/on hold) : ",
+
+        SET update_status: bool TO False,
+
+    ) -> Tuple[str, list, int]:
+
+        """An function that uses recursion to make sure that an INPUT is enter as required
+
+
+
+        Keyword arguments:
+
+        msg -- The message that should be displayed to the user to get the project status INPUT
+
+        update_status -- Whether to update the status count
+
+
+
+        Return: Tuple[The state enter by the user,
+
+                        the statistic list used to track the project status count,
+
+                        the index of the enter state
+
+                    ]
+
+        """
+
+        SET project_state TO str(INPUT(msg)).replace(" ", "").lower()
+
+        IF project_state not IN possible_INPUTs:
+
+            OUTPUT("The entered project status is incorrect...")
+
+            RETURN self.project_status_verification()
+
+        IF update_status:
+
+            statistics_list[possible_INPUTs.index(project_state)] += 1
+
+        RETURN (
+
+            project_state,
+
+            statistics_list,
+
+            possible_INPUTs.index(project_state),
+
+        )
+
+
+
+    DEFINE FUNCTION project_code_verification(self, msg: str, project_codes: list) -> str:
+
+        """Project Code Verification function with the use of recursion...
+
+
+
+        Keyword arguments:
+
+        msg (str) -- The message that is displayed and ask the user to enter the project code
+
+        project_codes (list) -- The list of project codes that already exists
+
+
+
+        Return: (str) of a project code that doesnt already exist...
+
+        """
+
+        SET project_code TO str(INPUT(msg))
+
+        IF project_code IN project_codes:
+
+            OUTPUT("Project Code already exists..!")
+
+            RETURN self.project_code_verification(msg, project_codes)
+
+        RETURN project_code
+
+
+
+
+
+WHILE execute:
+
+    SET choice TO menu(redirect=redirect_choice, to=redirect_to)
+
+    SET redirect_choice, redirect_to TO False, None
+
+    IF choice EQUALS "1":
+
+        OUTPUT(
+
+            f"""
+
+            {company_name}
+
+            Add a new project
+
+          """
+
+        )
+
+        SET code_of_project TO Verification().project_code_verification(
+
+            "Project Code : ", project_names
+
+        )
+
+        IF code_of_project EQUALS "0":
+
+            continue
+
+        SET clients_name TO str(INPUT("Clients Name : "))
+
+        SET start_date TO Verification().date_verification("Start Date (MM/DD/YYYY) : ")
+
+        SET expected_end_date TO Verification().date_verification(
+
+            "Expected end date (MM/DD/YYYY) : "
+
+        )
+
+        SET number_of_workers TO int(INPUT("Numbers of Workers : "))
+
+        (
+
+            project_status,
+
+            status_list,
+
+            index,
+
+        SET ) TO Verification().project_status_verification()
+
+        SET save TO str(INPUT("Do you want to save the project(Yes/No)? "))
+
+        IF (number_of_workers <= workers) and (save.upper() EQUALS "YES"):
+
+            SET execution_status, response_msg, workers TO Projects().create_project(
+
+                status_list,
+
+                index,
+
+                code_of_project,
+
+                clients_name,
+
+                start_date,
+
+                expected_end_date,
+
+                number_of_workers,
+
+                project_status,
+
+                workers,
+
+                all_projects,
+
+                statistics_list,
+
+                possible_INPUTs,
+
+            )
+
+            OUTPUT(f"{response_msg} ({execution_status})")
+
+        ELSE:
+
+            OUTPUT(
+
+                "The project was *not* saved ..!"
+
+                IF save.upper() != "YES"
+
+                else "There isnt enough workers available..!"
+
+            )
+
+
+
+    ELSEIF choice EQUALS "2":
+
+        OUTPUT(
+
+            f"""
+
+      {company_name}
+
+      Remove Completed Project
+
+    """
+
+        )
+
+        SET code_of_project TO str(INPUT("Project Code : "))
+
+        SET save TO str(INPUT("Do you want to save the project (Yes/ No)? "))
+
+        IF (code_of_project IN project_names) and (save.upper() EQUALS "YES"):
+
+            (
+
+                execution_status,
+
+                response_msg,
+
+                workers,
+
+                status_list,
+
+                completed_projects,
+
+                every_project,
+
+                project_names,
+
+            SET ) TO Projects().remove_completed_projects(
+
+                code_of_project,
+
+                all_projects,
+
+                workers,
+
+                statistics_list,
+
+                completed_projects,
+
+                possible_INPUTs,
+
+            )
+
+            OUTPUT(f"{response_msg} ({execution_status})")
+
+        ELSE:
+
+            OUTPUT(
+
+                "The project was not removed..!"
+
+                IF save.upper() != "YES"
+
+                else "The project does not exist..!"
+
+            )
+
+
+
+    ELSEIF choice EQUALS "3":
+
+        OUTPUT(
+
+            f"""
+
+      {company_name}
+
+      Add new Workers
+
+    """
+
+        )
+
+        SET new_no_of_workers TO int(INPUT("Number Workers to Add : "))
+
+        SET save TO str(INPUT("Do you want to add ? (Yes / No) "))
+
+        IF save.upper() EQUALS "YES" and new_no_of_workers > 0:
+
+            workers += new_no_of_workers
+
+            OUTPUT("Workers added successfully..!")
+
+        ELSE:
+
+            OUTPUT(
+
+                "Workers must be more than 0..!"
+
+                IF workers <= 0
+
+                else "Workers were not added..!"
+
+            )
+
+
+
+    ELSEIF choice EQUALS "4":
+
+        OUTPUT(
+
+            f"""
+
+      {company_name}
+
+      Update Project Details
+
+    """
+
+        )
+
+        SET code_of_project TO str(INPUT("Project Code : "))
+
+        IF code_of_project.replace(" ", "") EQUALS "0":
+
+            continue
+
+        SET clients_name TO str(INPUT("Clients Name : "))
+
+        SET start_date TO Verification().date_verification("Start Date (MM/DD/YYYY) : ")
+
+        SET expected_end_date TO Verification().date_verification(
+
+            "Expected end date (MM/DD/YYYY) : "
+
+        )
+
+        SET number_of_workers TO int(INPUT("Numbers of Workers : "))
+
+        (
+
+            project_status,
+
+            status_list,
+
+            index,
+
+        SET ) TO Verification().project_status_verification()
+
+        SET save TO str(INPUT("Do you want to update the project details (Yes/No)?"))
+
+        IF save.upper() EQUALS "YES" and code_of_project IN project_names:
+
+            (
+
+                current_workers,
+
+                previous_project_status,
+
+                previous_index,
+
+            SET ) TO all_projects[
+
+                project_names.index(code_of_project)
+
+            ][4:]
+
+            SET execution_status, response_msg, workers TO Projects().update_project_details(
+
+                status_list,
+
+                index,
+
+                previous_index,
+
+                code_of_project,
+
+                clients_name,
+
+                start_date,
+
+                expected_end_date,
+
+                number_of_workers,
+
+                project_status,
+
+                current_workers,
+
+                workers,
+
+                # possible_INPUTs,
+
+                previous_project_status,
+
+            )
+
+            OUTPUT(f"{response_msg} ({execution_status})")
+
+        ELSE:
+
+            OUTPUT("There isn't a project with the mentioned project code..!")
+
+
+
+    # When user choice is 5
+
+    ELSEIF choice EQUALS "5":
+
+        OUTPUT(
+
+            f"""
+
+      {company_name}
+
+      Project Statistics
+
+    """
+
+        )
+
+        FOR idx, item IN enumerate(possible_INPUTs):
+
+            OUTPUT(f"Number of {item} projects : {statistics_list[idx]}")
+
+        OUTPUT(f"Number of available workers : {workers}")
+
+        SET add_project TO str(INPUT("Do you want to add the project (Yes/No)?"))
+
+        IF add_project.upper() EQUALS "YES":
+
+            SET redirect_choice, redirect_to TO True, "1"
+
+
+
+    ELSEIF choice EQUALS "6":
+
+        SET execute TO False
+
+
+
+    ELSE:
+
+        OUTPUT("Please enter a valid choice..!")
