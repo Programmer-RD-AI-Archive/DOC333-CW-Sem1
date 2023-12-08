@@ -36,7 +36,7 @@ def menu(
      2. Remove a completed project from existing projects.
      3. Add new workers to available workers group.
      4. Updates details on ongoing projects.
-     5. Project Statistics.
+     5. Project statics.
      6. Exit
     """
     print("Redirecting..." if redirect else main_menu)
@@ -247,7 +247,7 @@ def date_verification(msg: str) -> str:
 
 
 def project_status_verification(
-    msg: str = "Project Status (ongoing/completed/on hold) : ",
+    msg: str = f"Project Status ({"/".join(possible_inputs)}) : ",
     update_status: bool = False,
 ) -> (str, list, int):
     """An function that uses recursion to make sure that an input is enter as required
