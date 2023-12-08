@@ -233,7 +233,7 @@ def update_project_details(
         return (False, e, workers_tot)
 
 
-def date_verification(self, msg: str) -> str:
+def date_verification(msg: str) -> str:
     """A function that uses recursion to make sure that the entered date is in a correct format...
     Keyword arguments:
     msg (str) -- the message that should be displayed...
