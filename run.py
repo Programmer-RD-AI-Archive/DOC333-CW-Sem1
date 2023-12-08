@@ -153,10 +153,13 @@ def create_project(
             project_status,
             index,
         ]
+        if project_status == "ongoing" and (number_of_workers <= workers_tot):
+            return (False,"There is not enough workers",workers_tot)
         if project_status == "ongoing":
             workers_tot -= number_of_workers
         project_names.append(code_of_project)
         all_projects.append(project_data)
+        
         return (True, "Successfully created a new project", workers_tot)
     except Exception as e:
         return (False, e, workers_tot)
@@ -324,7 +327,7 @@ while execute:
             index,
         ) = project_status_verification()
         save = str(input("Do you want to save the project(Yes/No)? "))
-        if (number_of_workers <= workers) and (save.upper() == "YES"):
+        if (save.upper() == "YES"):
             execution_status, response_msg, workers = create_project(
                 status_list,
                 index,
@@ -343,8 +346,6 @@ while execute:
         else:
             print(
                 "The project was *not* saved ..!"
-                if save.upper() != "YES"
-                else "There isnt enough workers available..!"
             )
 
     elif choice == "2":
@@ -442,7 +443,6 @@ while execute:
                 project_status,
                 current_workers,
                 workers,
-                # possible_inputs,
                 previous_project_status,
             )
             print(f"{response_msg} ({execution_status})")
