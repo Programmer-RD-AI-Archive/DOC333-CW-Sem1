@@ -153,13 +153,12 @@ def create_project(
             project_status,
             index,
         ]
-        if project_status == "ongoing" and (number_of_workers <= workers_tot):
+        if project_status == "ongoing" and (number_of_workers > workers_tot):
             return (False,"There is not enough workers",workers_tot)
         if project_status == "ongoing":
             workers_tot -= number_of_workers
         project_names.append(code_of_project)
         all_projects.append(project_data)
-        
         return (True, "Successfully created a new project", workers_tot)
     except Exception as e:
         return (False, e, workers_tot)
@@ -199,10 +198,11 @@ def update_project_details(
     ]
     """
     try:
-        if number_of_workers > workers_tot + (
-            current_workers if previous_project_status == "ongoing" else 0
-        ):
-            return (False, "Workers chosen are too much", workers_tot)
+        if project_status == "ongoing":
+            if number_of_workers > workers_tot + (
+                current_workers if previous_project_status == "ongoing" else 0
+            ):
+                return (False, "Workers chosen are too much", workers_tot)
         if project_status == "ongoing":
             workers_tot -= number_of_workers
         if previous_project_status == "ongoing":
@@ -348,8 +348,11 @@ while execute:
     """
         )
         code_of_project = str(input("Project Code : "))
+        if code_of_project not in project_names:
+            print('The project does not exist')
+            continue
         save = str(input("Do you want to save the project (Yes/ No)? "))
-        if (code_of_project in project_names) and (save.upper() == "YES"):
+        if (save.upper() == "YES"):
             (
                 execution_status,
                 response_msg,
@@ -370,8 +373,6 @@ while execute:
         else:
             print(
                 "The project was not removed..!"
-                if save.upper() != "YES"
-                else "The project does not exist..!"
             )
 
     elif choice == "3":
@@ -382,16 +383,15 @@ while execute:
     """
         )
         new_no_of_workers = check_if_int("Number Workers to Add : ")
+        if new_no_of_workers < 0:
+            print('Workers must be more than 0..!')
+            continue
         save = str(input("Do you want to add ? (Yes / No) "))
-        if save.upper() == "YES" and new_no_of_workers > 0:
+        if save.upper() == "YES":
             workers += new_no_of_workers
             print("Workers added successfully..!")
         else:
-            print(
-                "Workers must be more than 0..!"
-                if workers <= 0
-                else "Workers were not added..!"
-            )
+            print("Workers were not added..!")
 
     elif choice == "4":
         print(
@@ -401,6 +401,9 @@ while execute:
     """
         )
         code_of_project = str(input("Project Code : "))
+        if code_of_project not in project_names:
+            print("There isn't a project with the mentioned project code..!")
+            continue
         if code_of_project.replace(" ", "") == "0":
             continue
         clients_name = str(input("Clients Name : "))
@@ -415,7 +418,7 @@ while execute:
             index,
         ) = project_status_verification()
         save = str(input("Do you want to update the project details (Yes/No)?"))
-        if save.upper() == "YES" and code_of_project in project_names:
+        if save.upper() == "YES":
             (
                 current_workers,
                 previous_project_status,
@@ -439,7 +442,7 @@ while execute:
             )
             print(f"{response_msg} ({execution_status})")
         else:
-            print("There isn't a project with the mentioned project code..!")
+            print("The project was not updated")
 
     # When user choice is 5
     elif choice == "5":

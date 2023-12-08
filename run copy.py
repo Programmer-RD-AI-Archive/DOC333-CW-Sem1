@@ -484,3 +484,13 @@ while execute:
 
     else:
         print("Please enter a valid choice..!")
+
+data = {
+    "Project Codes":[],
+    "Clients Names":[],
+    "Start Date":[],
+    "End Date":[],
+    "Workers":[],
+    "Statuts":[]
+}
+project_codes = []
