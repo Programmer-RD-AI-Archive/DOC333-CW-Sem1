@@ -71,7 +71,7 @@ def remove_completed_projects(
             start_date,
             expected_end_date,
             number_of_workers,
-            _,
+            old_project_status,
             index,
         ) = every_project[index_of_project]
         completed_project_details = [
@@ -82,7 +82,8 @@ def remove_completed_projects(
             number_of_workers,
             actual_end_date,
         ]
-        workers_tot += number_of_workers
+        if old_project_status == "ongoing":
+            workers_tot += number_of_workers
         stats_list[index] -= 1
         stats_list[possible_stats.index("completed")] += 1
         complete_projects.append(completed_project_details)
@@ -119,9 +120,8 @@ def create_project(
     number_of_workers: str,
     project_status: str,
     workers_tot: int,
-    every_project: list,
-    stats_list: list,
-    possible_stats: list,
+    project_names:list,
+    all_projects:list
 ) -> (bool, str):
     """This function creates a new project
     Keyword arguments:
@@ -134,9 +134,8 @@ def create_project(
     number_of_workers (str) -- The number of workers required for the project
     project_status (str) -- The status of the project out of (ongoing,on hold, completed)
     workers_tot (int) -- total number of workers in the organization
-    every_project (list) -- A list which contains all the projects which haven't been removed
-    stats_list (list) -- The list that tracks the statistics for choice (5)
-    possible_stats (list) -- All the possible status
+    project_names (list) -- a list that contains all the project codes
+    all_projects (list) -- a list that contains all the projects
     Return: Tuple[
         A boolean which shows if the function successfully executed or not,
         The message which will be displayed to the user
@@ -154,14 +153,14 @@ def create_project(
             index,
         ]
         if project_status == "ongoing" and (number_of_workers > workers_tot):
-            return (False,"There is not enough workers",workers_tot)
+            return (False,"There is not enough workers",workers_tot,all_projects,project_names)
         if project_status == "ongoing":
             workers_tot -= number_of_workers
         project_names.append(code_of_project)
         all_projects.append(project_data)
-        return (True, "Successfully created a new project", workers_tot)
+        return (True, "Successfully created a new project", workers_tot,all_projects,project_names)
     except Exception as e:
-        return (False, e, workers_tot)
+        return (False, e, workers_tot,all_projects,project_names)
 
 
 def update_project_details(
@@ -198,11 +197,10 @@ def update_project_details(
     ]
     """
     try:
-        if project_status == "ongoing":
-            if number_of_workers > workers_tot + (
-                current_workers if previous_project_status == "ongoing" else 0
-            ):
-                return (False, "Workers chosen are too much", workers_tot)
+        if number_of_workers > workers_tot + (
+            current_workers if previous_project_status == "ongoing" else 0
+        ) and project_status == "ongoing":
+            return (False, "Workers chosen are too much", workers_tot)
         if project_status == "ongoing":
             workers_tot -= number_of_workers
         if previous_project_status == "ongoing":
@@ -320,7 +318,7 @@ while execute:
         ) = project_status_verification()
         save = str(input("Do you want to save the project(Yes/No)? "))
         if (save.upper() == "YES"):
-            execution_status, response_msg, workers = create_project(
+            execution_status, response_msg, workers,all_projects,project_names = create_project(
                 status_list,
                 index,
                 code_of_project,
@@ -330,9 +328,8 @@ while execute:
                 number_of_workers,
                 project_status,
                 workers,
-                all_projects,
-                statistics_list,
-                possible_inputs,
+                project_names,
+                all_projects
             )
             print(f"{response_msg} ({execution_status})")
         else:
