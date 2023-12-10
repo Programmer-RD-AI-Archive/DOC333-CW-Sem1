@@ -1,5 +1,7 @@
+# import libraries / packages
 import datetime
 
+# initalize variables
 company_name = "XYZ Company"
 workers = 0
 choice = 0
@@ -38,9 +40,9 @@ def menu(
      4. Updates details on ongoing projects.
      5. Project Statistics.
      6. Exit
-    """
-    print("Redirecting..." if redirect else main_menu)
-    return to if redirect else str(input(msg))
+    """.center(14)
+    print("Redirecting..." if redirect else main_menu) # checking if the `redirect` variable is True if it is then "Redirecting..." if not then the main menu is dispalyed
+    return to if redirect else str(input(msg)) # returning the variable `to` if `redirect` variabel is True if itsnt then the user is asked an input with the `msg` string
 
 
 def remove_completed_projects(
@@ -62,9 +64,8 @@ def remove_completed_projects(
     Return: Tuple[A boolean which states whether or not the operation was successful, A string which has an output msg regarding the operation if it was successful or not.]
     """
     try:
-        index_of_project = project_names.index(code_of_project)
-        date_time = datetime.datetime.now()
-        actual_end_date = date_time.strftime("%m/%d/%Y")
+        index_of_project = project_names.index(code_of_project) # geting the index of the project
+        actual_end_date = datetime.datetime.now().strftime("%m/%d/%Y") # geting the current date
         (
             code_of_project,
             clients_name,
@@ -73,7 +74,7 @@ def remove_completed_projects(
             number_of_workers,
             old_project_status,
             index,
-        ) = every_project[index_of_project]
+        ) = every_project[index_of_project] # assigning the details from the project_details
         completed_project_details = [
             code_of_project,
             clients_name,
@@ -81,14 +82,14 @@ def remove_completed_projects(
             expected_end_date,
             number_of_workers,
             actual_end_date,
-        ]
-        if old_project_status == "ongoing":
-            workers_tot += number_of_workers
-        stats_list[index] -= 1
-        stats_list[possible_stats.index("completed")] += 1
-        complete_projects.append(completed_project_details)
-        del every_project[index_of_project]
-        del project_names[index_of_project]
+        ] # create a new data structure which contains the details for an completed project
+        if old_project_status == "ongoing": 
+            workers_tot += number_of_workers # if the old project status is ongoing then the workers in the project are added back to the `workers_tot` variable
+        stats_list[index] -= 1 # subtracting 1 from the old_status index
+        stats_list[possible_stats.index("completed")] += 1 # adding 1 for the completed statistics
+        complete_projects.append(completed_project_details) # append the `completed_project_details` list to the main complete_projects list
+        del every_project[index_of_project] # delete the project from `every_project` list
+        del project_names[index_of_project] # delete the project_code from the `project_names` list
         return (
             True,
             "Successfully removed completed projects.",
@@ -97,7 +98,7 @@ def remove_completed_projects(
             completed_projects,
             every_project,
             project_names,
-        )
+        ) 
     except Exception as e:
         return (
             False,
@@ -108,7 +109,7 @@ def remove_completed_projects(
             every_project,
             project_names,
         )
-
+    # return the (execution status, repsonse message, workers_tot, status_list, completed_projects, every_project, project_names)
 
 def create_project(
     status_list: list,
@@ -142,7 +143,7 @@ def create_project(
     ]
     """
     try:
-        status_list[index] += 1
+        status_list[index] += 1 # add 1 to the statistics list that tracks the entire 
         project_data = [
             code_of_project,
             clients_name,
@@ -151,16 +152,17 @@ def create_project(
             number_of_workers,
             project_status,
             index,
-        ]
-        if project_status == "ongoing" and (number_of_workers > workers_tot):
+        ] # create a list with the details that are required 
+        if project_status == "ongoing" and (number_of_workers > workers_tot): # checking if the project status is "ongoing" and if `number_of_workes` is greater than `workers_tot` variable
             return (False,"There is not enough workers",workers_tot,all_projects,project_names)
-        if project_status == "ongoing":
-            workers_tot -= number_of_workers
-        project_names.append(code_of_project)
-        all_projects.append(project_data)
+        if project_status == "ongoing": # checking if the project status is "ongoing"
+            workers_tot -= number_of_workers # subtracting the workers that were entered by the user by the total workers avaialble
+        project_names.append(code_of_project) # appending the project code to the `project_names` list
+        all_projects.append(project_data) # appending the project date to the `all_projects` list
         return (True, "Successfully created a new project", workers_tot,all_projects,project_names)
     except Exception as e:
         return (False, e, workers_tot,all_projects,project_names)
+    # return the (execution status, repsonse message, workers_tot,all_projects, project_names)
 
 
 def update_project_details(
@@ -199,14 +201,14 @@ def update_project_details(
     try:
         if number_of_workers > workers_tot + (
             current_workers if previous_project_status == "ongoing" else 0
-        ) and project_status == "ongoing":
+        ) and project_status == "ongoing": # checking if there is enough workers if the project_status is "ongoing" to make sure that workers are going to be assinged, and then we check if the there is enough workers to add a project
             return (False, "Workers chosen are too much", workers_tot)
-        if project_status == "ongoing":
-            workers_tot -= number_of_workers
-        if previous_project_status == "ongoing":
-            workers_tot += current_workers
-        status_list[index] += 1
-        status_list[previous_index] -= 1
+        if project_status == "ongoing": # checking if the project status is "ongoing"
+            workers_tot -= number_of_workers # subtracting the number_of_workers from the workers total
+        if previous_project_status == "ongoing": # checking if the project status is "ongoing"
+            workers_tot += current_workers # adding the current_workers from the workers total
+        status_list[index] += 1 # updating the statistics_list of the new status
+        status_list[previous_index] -= 1 # updating the statistics metrics of the old status
         project_data = [
             code_of_project,
             clients_name,
@@ -215,13 +217,13 @@ def update_project_details(
             number_of_workers,
             project_status,
             index,
-        ]
-        index = project_names.index(code_of_project)
-        all_projects[index] = project_data
+        ] # create an project_data list which contains all the data
+        index = project_names.index(code_of_project) # finding the index of the project_code
+        all_projects[index] = project_data # reassign the all_projects index to the project_data list
         return (True, "Project details updated successfully", workers_tot)
     except Exception as e:
         return (False, e, workers_tot)
-
+    # return the (execution status, repsonse message, workers_tot)
 
 def date_verification(msg: str) -> str:
     """A function that uses recursion to make sure that the entered date is in a correct format...
@@ -229,20 +231,23 @@ def date_verification(msg: str) -> str:
     msg (str) -- the message that should be displayed...
     Return: A string which contains a correct date format...
     """
-    date = input(msg)
-    splitted_date = date.split(date[2] if len(date) > 3 else " ")
-    if len(splitted_date) != 3:
-        print("Enter a valid format of the date..!")
+    try:
+        date = input(msg) # asking the user for an input
+        splitted_date = date.split(date[2] if len(date) > 3 else " ") # spliting the data with the second element (starting from 0) the string
+        if len(splitted_date) != 3: # checking if there is 3 elements in the list of the splited string
+            print("Enter a valid format of the date..!")
+            return date_verification(msg)
+        month, date, _ = splitted_date # splititng the list into month, date, and yrs
+        if int(month) > 12: # checking if the months are bigger than 12
+            print("Enter a valid month..!")
+            return date_verification(msg)
+        if int(date) > 31: # checking if the date is higher than 31
+            print("Enter a valid date..!")
+            return date_verification(msg)
+        return date
+    except:
+        print("An error occured please eneter the value again..!")
         return date_verification(msg)
-    month, date, _ = splitted_date
-    if int(month) > 12:
-        print("Enter a valid month..!")
-        return date_verification(msg)
-    if int(date) > 31:
-        print("Enter a valid date..!")
-        return date_verification(msg)
-    return date
-
 
 def project_status_verification(
     msg: str = "Project Status (ongoing/completed/on hold) : ",
@@ -257,17 +262,17 @@ def project_status_verification(
                     the index of the enter state
                 ]
     """
-    project_state = str(input(msg)).replace(" ", "").lower()
-    if project_state not in possible_inputs:
+    project_state = str(input(msg)).replace(" ", "").lower() # asking the user for the project_status and then replacing " " with "" and lowering the entire string
+    if project_state not in possible_inputs: # checking if the project_state is not in the possible_inputs
         print("The entered project status is incorrect...")
-        return project_status_verification()
-    if update_status:
-        statistics_list[possible_inputs.index(project_state)] += 1
+        return project_status_verification() # Calls the project_status_vertifiation() function (itself)
+    if update_status: # checking if the `update_status` boolean is True
+        statistics_list[possible_inputs.index(project_state)] += 1 # update the statistics_list
     return (
         project_state,
         statistics_list,
         possible_inputs.index(project_state),
-    )
+    ) # returning (project_state,statistics_list,index)
 
 
 def project_code_verification(msg: str, project_codes: list) -> str:
@@ -277,7 +282,7 @@ def project_code_verification(msg: str, project_codes: list) -> str:
     project_codes (list) -- The list of project codes that already exists
     Return: (str) of a project code that doesnt already exist...
     """
-    project_code = str(input(msg))
+    project_code = str(input(msg)) # asking the user for an project_code input
     if project_code in project_codes:
         print("Project Code already exists..!")
         return project_code_verification(msg, project_codes)
@@ -298,7 +303,7 @@ while execute:
             f"""
             {company_name}
             Add a new project
-          """
+          """.center(14)
         )
         code_of_project = project_code_verification(
             "Project Code : ", project_names
@@ -342,7 +347,7 @@ while execute:
             f"""
       {company_name}
       Remove Completed Project
-    """
+    """.center(14)
         )
         code_of_project = str(input("Project Code : "))
         if code_of_project not in project_names:
@@ -377,7 +382,7 @@ while execute:
             f"""
       {company_name}
       Add new Workers
-    """
+    """.center(14)
         )
         new_no_of_workers = check_if_int("Number Workers to Add : ")
         if new_no_of_workers < 0:
@@ -395,7 +400,7 @@ while execute:
             f"""
       {company_name}
       Update Project Details
-    """
+    """.center(14)
         )
         code_of_project = str(input("Project Code : "))
         if code_of_project not in project_names:
@@ -447,7 +452,7 @@ while execute:
             f"""
       {company_name}
       Project Statistics
-    """
+    """.center(14)
         )
         for idx, item in enumerate(possible_inputs):
             print(f"Number of {item} projects : {statistics_list[idx]}")
