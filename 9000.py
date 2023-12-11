@@ -45,7 +45,9 @@ while True:
         # Asking for Details.
 
         project_code = int(input("Project Code:"))
-
+        while project_code in projects_L:
+            print("Already existing project code")
+            project_code = int(input("Project Code:"))
         # Redireting back to main menu if project code = 0.
         if project_code == 0:
             print("Redirecting to Main Menu...")
@@ -54,13 +56,31 @@ while True:
         start_date = str(input("Start Date:"))
         expected_end_date = str(input("Expected End Date"))
         number_of_workers_needed = int(input("Number of Workers Involved"))
-        project_status = str(input("Project Status (ongoing/onhold/completed):"))
-        print("")
+        project_status = (
+            str(input("Project Status (ongoing/onhold/completed):"))
+            .lower()
+            .replace(" ", "")
+        )
+        while project_status not in ["completed", "onhold", "ongoing"]:
+            print("Invalid project status...")
+            project_status = (
+                str(input("Project Status (ongoing/onhold/completed):"))
+                .lower()
+                .replace(" ", "")
+            )
 
         # Asking if project neededs to be saved.
         # PLACE 3
-        saving_project = str(input("Do you want to save project (yes/no):"))
-
+        saving_project = (
+            str(input("Do you want to save project (yes/no):")).lower().replace(" ", "")
+        )
+        while saving_project not in ["yes", "no"]:
+            print("Invalid choice..!")
+            saving_project = (
+                str(input("Do you want to save project (yes/no):"))
+                .lower()
+                .replace(" ", "")
+            )
         # if project does not need to be saved.
         if saving_project == "no":
             print("Project was not saved")
@@ -92,27 +112,35 @@ while True:
 
         # Asking which project is completed.
         project_code = int(input("please enter project code:"))
+        while project_code not in projects_L:
+            print("Invalid project code")
+            project_code = int(input("please enter project code:"))
         print("")
 
         # Asking if project needs to be removed.
         removal = str(input("Do you wish to remove Project(yes/no)"))
-
+        while removal not in ["yes", "no"]:
+            print("Invalid choice..!")
+            removal = (
+                str(input("Do you wish to remove Project(yes/no)"))
+                .lower()
+                .replace(" ", "")
+            )
         # if yes
         if removal == "yes":
             # ask for end date.
             end_date = float(input("Please enter actual end date:"))
 
             # put information to proper completed list.
-            completed_project_code.append = projects_L[project_code]
-            completed_clients_name.append = clients_name_L[project_code]
-            completed_start_date.append = start_date_L[project_code]
+            completed_project_code.append(projects_L[project_code])
+            completed_clients_name.append(clients_name_L[project_code])
+            completed_start_date.append(start_date_L[project_code])
             completed_start_date.append(expected_end_date_L[project_code])
             completed_number_of_workers_needed.append(
                 number_of_workers_needed_L[project_code]
             )
             actual_end_day.append(end_date)
             project_status_L[project_code] = "completed"
-
             # tell that completed project was removed
             print("removal of completed project was succesfull")
 
@@ -140,7 +168,15 @@ while True:
         conformation_workers = str(
             input("Do you want to add these workers to the work force(yes/no):")
         )
-
+        while conformation_workers not in ["yes", "no"]:
+            print("Invalid choice..")
+            conformation_workers = (
+                str(
+                    input("Do you want to add these workers to the work force(yes/no):")
+                )
+                .lower()
+                .replace(" ", "")
+            )
         # if yes.
         if conformation_workers == "yes":
             # calculation.
@@ -169,19 +205,41 @@ while True:
         project_code = int(
             input("Please enter the projects code that needs to be updated")
         )
+        while project_code not in projects_L:
+            print("Invalid project code")
+            project_code = int(
+                input("Please enter the projects code that needs to be updated")
+            )
         print("")
         # ask for other details thats need to be replaced.
         client_names = str(input("Clients Name:"))
         Start_date = str(input("Start Date:"))
         expected_end_date = str(input("Expected End Day:"))
         num_of_workers_needed = int(input("Number of workers:"))
-        project_status = str(input("Project Status (ongoing/onhold/completed):"))
+        project_status = (
+            str(input("Project Status (ongoing/onhold/completed):"))
+            .lower()
+            .replace(" ", "")
+        )
+        while project_status not in ["completed", "onhold", "ongoing"]:
+            print("Invalid project status...")
+            project_status = (
+                str(input("Project Status (ongoing/onhold/completed):"))
+                .lower()
+                .replace(" ", "")
+            )
         print("")
 
         # conformation to update project.
         # PLACE 9
         conformation_update = str(input("Do you want to update the project(yes/no):"))
-
+        while conformation_update not in ["yes", "no"]:
+            print("Invalid choice..!")
+            conformation_update = (
+                str(input("Do you want to update the project(yes/no):"))
+                .lower()
+                .replace(" ", "")
+            )
         # if yes
         if conformation_update == "yes":
             clients_name_L[project_code] = client_names
