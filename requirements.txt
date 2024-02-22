@@ -225,7 +225,7 @@ partd @ file:///opt/conda/conda-bld/partd_1647245470509/work
 pathlib @ file:///Users/ktietz/demo/mc3/conda-bld/pathlib_1629713961906/work
 pathspec @ file:///work/ci_py311_2/pathspec_1679337288229/work
 pathtools==0.1.2
-patsy==0.5.3
+patsy==0.5.6
 pep8==1.7.1
 pexpect @ file:///tmp/build/80754af9/pexpect_1605563209008/work
 pickleshare @ file:///tmp/build/80754af9/pickleshare_1606932040724/work
