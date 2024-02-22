@@ -253,7 +253,7 @@ pycodestyle @ file:///work/ci_py311/pycodestyle_1677708783451/work
 pycosat @ file:///work/ci_py311/pycosat_1676838522308/work
 pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
 pyct @ file:///work/ci_py311/pyct_1676838544646/work
-pycurl==7.45.2
+pycurl==7.45.3
 PyDispatcher==2.0.5
 pydocstyle @ file:///work/ci_py311/pydocstyle_1677708708066/work
 pyerfa @ file:///work/ci_py311/pyerfa_1676838574038/work
