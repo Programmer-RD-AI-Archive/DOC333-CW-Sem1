@@ -201,7 +201,7 @@ numpy @ file:///work/mkl/numpy_and_numpy_base_1682953417311/work
 numpydoc @ file:///work/ci_py311/numpydoc_1676845056742/work
 nvidia-cublas-cu11==11.10.3.66
 nvidia-cuda-cupti-cu11==11.7.101
-nvidia-cuda-nvrtc-cu11==11.7.99
+nvidia-cuda-nvrtc-cu11==11.8.89
 nvidia-cuda-runtime-cu11==11.7.99
 nvidia-cudnn-cu11==8.5.0.96
 nvidia-cufft-cu11==10.9.0.58
