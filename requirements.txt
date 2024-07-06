@@ -39,7 +39,7 @@ botocore @ file:///croot/botocore_1682527998176/work
 Bottleneck @ file:///work/ci_py311/bottleneck_1676827011612/work
 brotlipy==0.7.0
 cachetools==5.3.2
-certifi==2023.7.22
+certifi==2024.7.4
 cffi @ file:///work/ci_py311/cffi_1676822533496/work
 chardet @ file:///work/ci_py311/chardet_1676830276092/work
 charset-normalizer @ file:///tmp/build/80754af9/charset-normalizer_1630003229654/work
