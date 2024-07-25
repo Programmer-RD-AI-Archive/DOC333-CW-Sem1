@@ -355,7 +355,7 @@ toml @ file:///tmp/build/80754af9/toml_1616166611790/work
 tomli @ file:///work/ci_py311/tomli_1676822660974/work
 tomlkit @ file:///work/ci_py311/tomlkit_1676823218885/work
 toolz @ file:///work/ci_py311/toolz_1676827522705/work
-torch==2.0.1
+torch==2.2.0
 torchaudio==2.0.2
 torchdata @ file:///__w/_temp/conda_build_env/conda-bld/torchdata_1682362090263/work
 torchinfo==1.8.0
