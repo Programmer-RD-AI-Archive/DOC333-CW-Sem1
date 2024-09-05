@@ -1,4 +1,4 @@
-accelerate==0.21.0
+accelerate==0.34.2
 aiobotocore @ file:///croot/aiobotocore_1682536655331/work
 aiofiles @ file:///croot/aiofiles_1683773582346/work
 aiohttp @ file:///work/ci_py311/aiohttp_1676827623103/work
