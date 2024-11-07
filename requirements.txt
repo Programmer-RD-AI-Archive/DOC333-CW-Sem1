@@ -174,7 +174,7 @@ mccabe @ file:///opt/conda/conda-bld/mccabe_1644221741721/work
 mdit-py-plugins @ file:///work/ci_py311/mdit-py-plugins_1676837111662/work
 mdurl @ file:///work/ci_py311/mdurl_1676827289376/work
 mistune @ file:///work/ci_py311/mistune_1676823698136/work
-mkl-fft==1.3.6
+mkl-fft==1.3.11
 mkl-random @ file:///work/mkl/mkl_random_1682950433854/work
 mkl-service==2.4.0
 more-itertools @ file:///tmp/build/80754af9/more-itertools_1637733554872/work
