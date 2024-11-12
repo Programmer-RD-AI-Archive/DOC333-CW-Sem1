@@ -212,7 +212,7 @@ nvidia-ml-py==11.525.150
 nvidia-nccl-cu11==2.14.3
 nvidia-nvtx-cu11==11.7.91
 nvitop==1.1.2
-opencv-python==4.8.1.78
+opencv-python==4.10.0.84
 openpyxl==3.0.10
 packaging @ file:///croot/packaging_1678965309396/work
 pandas==1.5.3
