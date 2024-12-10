@@ -90,7 +90,7 @@ fastjsonschema @ file:///work/ci_py311_2/python-fastjsonschema_1679340124475/wor
 filelock @ file:///work/ci_py311/filelock_1676823024085/work
 flake8 @ file:///work/ci_py311/flake8_1677709235205/work
 Flask @ file:///work/ci_py311/flask_1676827140363/work
-fonttools==4.25.0
+fonttools==4.55.3
 frozenlist @ file:///work/ci_py311/frozenlist_1676825229010/work
 fsspec @ file:///croot/fsspec_1682525977151/work
 future @ file:///work/ci_py311_2/future_1679335928186/work
