@@ -266,7 +266,7 @@ pyls-spyder==0.4.0
 pyodbc @ file:///work/ci_py311/pyodbc_1676860985304/work
 pyOpenSSL @ file:///croot/pyopenssl_1678965284384/work
 pyparsing @ file:///work/ci_py311/pyparsing_1677811559502/work
-PyQt5-sip==12.11.0
+PyQt5-sip==12.16.1
 pyrsistent @ file:///work/ci_py311/pyrsistent_1676823088752/work
 PySocks @ file:///work/ci_py311/pysocks_1676822712504/work
 pytest @ file:///croot/pytest_1684171585955/work
