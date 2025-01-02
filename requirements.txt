@@ -95,7 +95,7 @@ frozenlist @ file:///work/ci_py311/frozenlist_1676825229010/work
 fsspec @ file:///croot/fsspec_1682525977151/work
 future @ file:///work/ci_py311_2/future_1679335928186/work
 gensim @ file:///work/ci_py311/gensim_1677033391129/work
-gitdb==4.0.11
+gitdb==4.0.12
 GitPython==3.1.40
 glob2 @ file:///home/linux1/recipes/ci/glob2_1610991677669/work
 gmpy2 @ file:///work/ci_py311/gmpy2_1676839849213/work
